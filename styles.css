@@ -348,6 +348,14 @@ p {
   gap: 10px;
 }
 
+.frame-topline .top-actions {
+  position: relative;
+  align-self: center;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
 .language-switcher {
   display: inline-flex;
   gap: 4px;
@@ -1354,6 +1362,10 @@ footer img {
 }
 
 .frame-home-link {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 12;
   justify-self: end;
   padding: 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.54);
