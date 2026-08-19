@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matriks Cattery | Britanske kratkodlake mačke</title>
+    <meta
+      name="description"
+      content="Matriks Cattery je odgajivačnica britanskih kratkodlakih mačaka posvećena zdravlju, temperamentu i izložbenom kvalitetu."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="public-page home-page">
+    <div class="intro" id="intro" aria-label="Matriks Cattery intro">
+      <img src="img/logo.jpg" alt="Matriks Cattery logo" />
+      <span>Matriks Cattery</span>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Matriks Cattery početna">
+        <img src="img/logo.jpg" alt="" />
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Otvori meni" aria-expanded="false">
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" aria-label="Glavna navigacija">
+        <a href="index.html">Početna</a>
+        <a href="macke.html">Naše mačke</a>
+        <a href="macici.html">Naši mačići</a>
+        <a href="blog.html">Blog</a>
+        <a href="rasa.html">O rasi</a>
+        <a href="kontakt.html">Kontakt</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="pocetna">
+        <div class="hero-stage">
+          <div class="hero-topline">
+            <a class="brand hero-brand" href="index.html" aria-label="Matriks Cattery početna">
+              <img src="img/logo.jpg" alt="" />
+            </a>
+            <button class="frame-menu-toggle" type="button" aria-label="Otvori meni" aria-expanded="false">
+              <span></span>
+              <span></span>
+            </button>
+            <div class="hero-mini-nav" aria-label="Brza navigacija">
+              <a href="macke.html">Mačke</a>
+              <a href="macici.html">Mačići</a>
+              <a href="blog.html">Blog</a>
+              <a href="rasa.html">O rasi</a>
+              <a href="kontakt.html">Kontakt</a>
+            </div>
+            <div class="top-actions" id="homeTopActions"></div>
+          </div>
+
+          <div class="hero-copy">
+            <p class="kicker">British Shorthair cattery</p>
+            <h1 id="heroTitle">Dobrodošli u<br />Matriks Cattery</h1>
+            <p id="heroText">
+              Odgajivačnica britanskih kratkodlakih mačaka posvećena zdravlju,
+              stabilnom temperamentu i izložbenom tipu.
+            </p>
+            <div class="hero-actions" id="heroActions" aria-live="polite"></div>
+          </div>
+
+          <div class="hero-cat">
+            <img id="heroImage" src="img/739040313_2035024693816032_1814703656727180949_n.jpg" alt="Britanska kratkodlaka mačka" />
+          </div>
+
+          <div class="hero-social" aria-label="Društvene mreže i potpis dizajna">
+            <div class="hero-social-links">
+              <a href="kontakt.html">Instagram</a>
+              <a href="kontakt.html">Facebook</a>
+            </div>
+            <p>Design by <a href="https://www.designeca.rs" target="_blank" rel="noopener noreferrer">Designeca</a></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="detail-modal" id="detailModal">
+      <button class="modal-close" type="button" aria-label="Zatvori">×</button>
+      <div class="modal-content" id="modalContent"></div>
+    </dialog>
+
+    <script src="script.js"></script>
+  </body>
+</html>

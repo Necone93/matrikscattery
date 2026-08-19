@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matriks Cattery Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-page">
+    <header class="admin-header">
+      <a class="brand" href="/">
+        <img src="img/logo.jpg" alt="" />
+        <span>Matriks Admin</span>
+      </a>
+      <a class="button ghost" href="/">Vidi sajt</a>
+    </header>
+
+    <main class="admin-shell">
+      <section class="login-panel" id="loginPanel">
+        <p class="kicker">Pristup</p>
+        <h1>Uredjivanje sadržaja</h1>
+        <label>
+          Admin lozinka
+          <input id="passwordInput" type="password" autocomplete="current-password" />
+        </label>
+        <button class="button primary" id="loginButton" type="button">Uđi u admin</button>
+        <p class="help-text">Podrazumevana lokalna lozinka je <strong>matriks2026</strong>. Za produkciju promeniti kroz <code>ADMIN_PASSWORD</code>.</p>
+      </section>
+
+      <section class="admin-app hidden" id="adminApp">
+        <nav class="admin-tabs" aria-label="Admin sekcije">
+          <button class="active" type="button" data-tab="animals">Mačke i mačići</button>
+          <button type="button" data-tab="posts">Blog</button>
+        </nav>
+
+        <section class="admin-grid" id="animalsTab">
+          <form class="admin-form" id="animalForm">
+            <h2 id="animalFormTitle">Nova mačka</h2>
+            <input type="hidden" name="id" />
+            <label>Tip
+              <select name="type">
+                <option value="cat">Naše mačke</option>
+                <option value="kitten">Naši mačići</option>
+              </select>
+            </label>
+            <label>Ime
+              <input name="name" required />
+            </label>
+            <label>Kratka oznaka
+              <input name="label" placeholder="Mužjak, ženka, leglo..." />
+            </label>
+            <label>Status
+              <input name="status" placeholder="Dostupno, rezervisano, champion..." />
+            </label>
+            <label>Glavna slika
+              <input name="image" placeholder="img/slika.jpg ili uploads/slika.jpg" />
+            </label>
+            <label>Galerija
+              <textarea name="gallery" rows="4" placeholder="Jedna putanja po redu"></textarea>
+            </label>
+            <label>Opis
+              <textarea name="text" rows="5"></textarea>
+            </label>
+            <label>Osnovne informacije
+              <textarea name="facts" rows="4" placeholder="Boja: Blue golden&#10;Karakter: Mirna"></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="button primary" type="submit">Sačuvaj</button>
+              <button class="button ghost" type="button" id="resetAnimal">Novo</button>
+            </div>
+          </form>
+
+          <div>
+            <div class="upload-box">
+              <label>Upload slike/video
+                <input id="animalUpload" type="file" accept="image/*,video/*" />
+              </label>
+              <p id="animalUploadResult"></p>
+            </div>
+            <div class="admin-list" id="animalList"></div>
+          </div>
+        </section>
+
+        <section class="admin-grid hidden" id="postsTab">
+          <form class="admin-form" id="postForm">
+            <h2 id="postFormTitle">Novi blog post</h2>
+            <input type="hidden" name="id" />
+            <label>Naslov
+              <input name="title" required />
+            </label>
+            <label>Kategorija
+              <input name="category" placeholder="Izložbe, Novosti, Dnevnik..." />
+            </label>
+            <label>Glavna slika
+              <input name="image" placeholder="img/slika.jpg ili uploads/slika.jpg" />
+            </label>
+            <label>Dodatni mediji
+              <textarea name="media" rows="4" placeholder="Jedna putanja po redu"></textarea>
+            </label>
+            <label>Tekst
+              <textarea name="text" rows="7"></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="button primary" type="submit">Sačuvaj</button>
+              <button class="button ghost" type="button" id="resetPost">Novo</button>
+            </div>
+          </form>
+
+          <div>
+            <div class="upload-box">
+              <label>Upload slike/video
+                <input id="postUpload" type="file" accept="image/*,video/*" />
+              </label>
+              <p id="postUploadResult"></p>
+            </div>
+            <div class="admin-list" id="postList"></div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
