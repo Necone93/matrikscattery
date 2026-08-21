@@ -18,23 +18,33 @@
         <a href="macke.html">Naše mačke</a>
         <a href="macici.html">Naši mačići</a>
         <a href="blog.html">Blog</a>
+        <a href="onama.html">O nama</a>
         <a href="rasa.html">O rasi</a>
         <a href="kontakt.html">Kontakt</a>
       </nav>
     </header>
     <main>
       <section class="section contact">
-        <div>
-          <p class="kicker">Kontakt</p>
+        <div class="contact-copy">
           <h1>Rezervacije i pitanja</h1>
           <p>Za informacije o dostupnim mačićima, planiranim leglima i poseti odgajivačnici, pošaljite poruku ili pozovite.</p>
         </div>
-        <div class="contact-panel">
-          <a href="mailto:info@matrikscattery.com">info@matrikscattery.com</a>
-          <a href="tel:+381600000000">+381 60 000 0000</a>
-          <span>Instagram: @matrikscattery</span>
-          <span>Srbija</span>
-        </div>
+        <form class="contact-form" id="contactForm">
+          <label>
+            <span data-contact-label="name">Ime i prezime</span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+          <label>
+            <span data-contact-label="email">Email</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label>
+            <span data-contact-label="message">Poruka</span>
+            <textarea name="message" rows="6" required></textarea>
+          </label>
+          <button class="button primary" type="submit" data-contact-label="submit">Pošalji</button>
+          <p class="form-status" role="status"></p>
+        </form>
       </section>
     </main>
     <script src="script.js"></script>

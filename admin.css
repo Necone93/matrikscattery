@@ -61,6 +61,22 @@
   color: var(--paper);
 }
 
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin: -8px 0 24px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(248, 243, 234, 0.72);
+}
+
+.admin-toolbar .help-text {
+  min-height: 1.4em;
+}
+
 .admin-grid {
   display: grid;
   grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);

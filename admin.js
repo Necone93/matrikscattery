@@ -9,6 +9,8 @@ const animalForm = document.querySelector("#animalForm");
 const postForm = document.querySelector("#postForm");
 const animalList = document.querySelector("#animalList");
 const postList = document.querySelector("#postList");
+const translateAllButton = document.querySelector("#translateAllButton");
+const translateStatus = document.querySelector("#translateStatus");
 
 function linesToArray(value) {
   return value
@@ -191,6 +193,22 @@ document.querySelectorAll(".admin-tabs button").forEach((button) => {
     document.querySelector("#animalsTab").classList.toggle("hidden", button.dataset.tab !== "animals");
     document.querySelector("#postsTab").classList.toggle("hidden", button.dataset.tab !== "posts");
   });
+});
+
+translateAllButton?.addEventListener("click", async () => {
+  translateAllButton.disabled = true;
+  translateStatus.textContent = "Prevodi se sadržaj...";
+
+  try {
+    content = await api("/api/admin/translate-all", { method: "POST" });
+    renderAnimals();
+    renderPosts();
+    translateStatus.textContent = "Prevodi su ažurirani.";
+  } catch (error) {
+    translateStatus.textContent = error.message;
+  } finally {
+    translateAllButton.disabled = false;
+  }
 });
 
 animalForm.addEventListener("submit", async (event) => {

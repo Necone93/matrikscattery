@@ -11,61 +11,83 @@ const inquiriesPath = path.join(dataDir, "inquiries.json");
 const port = Number(process.env.PORT || 3000);
 const adminPassword = process.env.ADMIN_PASSWORD || "matriks2026";
 const contactEmail = process.env.CONTACT_EMAIL || "info@matrikscattery.com";
+const openAiApiKey = process.env.OPENAI_API_KEY || "";
+const openAiTranslationModel = process.env.OPENAI_TRANSLATION_MODEL || "gpt-4o-mini";
+const deepLApiKey = process.env.DEEPL_API_KEY || "";
+const deepLApiUrl = process.env.DEEPL_API_URL || "https://api-free.deepl.com/v2/translate";
+const translationProvider = process.env.TRANSLATION_PROVIDER || (openAiApiKey ? "openai" : deepLApiKey ? "deepl" : "");
+const translationLanguages = {
+  en: "English",
+  ru: "Russian",
+  de: "German",
+  it: "Italian",
+};
 
 const seedCats = [
   {
     type: "cat",
-    name: "CH BriZodiac Floki",
+    name: "BRIZOODIACC FLOKI",
     label: "Mužjak",
-    status: "Best of the Year 2026",
-    image: "img/774196134_1794505428234882_8749782560177005708_n.jpg",
+    status: "Blue Golden Shaded Point",
+    sort_order: 1,
+    image: "img/BRIZOODIACC FLOKI/Screenshot_20250410_090411_Instagram.jpg",
     gallery: [
-      "img/774196134_1794505428234882_8749782560177005708_n.jpg",
-      "img/775416552_1857525661892065_8602051735133753210_n.jpg",
-      "img/739040313_2035024693816032_1814703656727180949_n.jpg",
-      "img/774087664_1379770473558784_3096747192544971024_n.jpg",
+      "img/BRIZOODIACC FLOKI/Screenshot_20250410_090411_Instagram.jpg",
+      "img/BRIZOODIACC FLOKI/20250704_174839.jpg",
+      "img/BRIZOODIACC FLOKI/20260516_114449.jpg",
+      "img/BRIZOODIACC FLOKI/Screenshot_20260702_094235_Gallery.jpg",
+      "img/BRIZOODIACC FLOKI/Screenshot_20260710_101035_Instagram.jpg",
     ],
-    text: "Floki je reprezentativan primer blue golden shaded point britanske kratkodlake mačke: stabilan, smiren i upečatljivog izraza. Njegov tip, kvalitet dlake i temperament čine ga važnim delom našeg uzgojnog programa.",
+    text: "BRIZOODIACC FLOKI je naš izuzetni mužjak šampionskog porekla, posebne i retke boje koja ga čini zaista jedinstvenim. Njegova lepota, skladna građa i elegantan izgled privlače pažnju gde god se pojavi. U boji je Blue Golden Shaded Point (AY 1233). Pored impresivnog izgleda i brojnih uspeha na izložbama, Floki nas svakodnevno osvaja svojim divnim karakterom. Neizmerno je mazan, umiljat i nežan, uvek željan društva, maženja i pažnje. Njegova mirna narav, privrženost i dobroćudnost čine ga posebnim članom naše porodice. Ponosni smo na njegove šampionske uspehe i kvalitet koji prenosi na svoje potomstvo, ali ono što nas najviše oduševljava jeste njegova nežna duša. Floki je pre svega jedno predivno biće koje svakog dana ispunjava naš dom ljubavlju i toplinom.",
     facts: {
-      Boja: "Blue golden shaded point",
-      Titula: "Champion",
-      Karakter: "Mirna i nežna narav",
+      Boja: "Blue Golden Shaded Point (AY 1233)",
+      Pol: "Mužjak",
+      Poreklo: "Šampionsko poreklo",
     },
   },
   {
     type: "cat",
-    name: "Matriks Luna",
+    name: "AMAZONITE BARBIE",
     label: "Ženka",
-    status: "U odgajivačnici",
-    image: "img/712338814_953255551048652_8266642486634720366_n.jpg",
+    status: "Silver Shaded",
+    sort_order: 2,
+    image: "img/AMAZONITE BARBIE/donja_slika_macke.png",
     gallery: [
-      "img/712338814_953255551048652_8266642486634720366_n.jpg",
-      "img/717005919_1008238481591700_406617061756352692_n.jpg",
-      "img/756523962_1055086823949840_7801777179541880694_n.jpg",
+      "img/AMAZONITE BARBIE/donja_slika_macke.png",
+      "img/AMAZONITE BARBIE/20260412_195647_resized.jpg",
+      "img/AMAZONITE BARBIE/20260414_185905_resized.jpg",
+      "img/AMAZONITE BARBIE/20260516_092443_resized.jpg",
+      "img/AMAZONITE BARBIE/20260516_092649_resized.jpg",
+      "img/AMAZONITE BARBIE/lv_0_20260730101816.jpg",
     ],
-    text: "Luna je nežna, uravnotežena i izuzetno privržena. U tipu nosi ono što volimo kod britanske kratkodlake mačke: zaobljenu liniju, plišanu dlaku i siguran, spokojan karakter.",
+    text: "Amazonite Barbie zauzima posebno mesto u našim srcima. Ona nije samo naša prva ženka, već i početak priče koja je danas postala Matriks Cattery. Barbie je predivna britanska kratkodlaka mačka u elegantnoj i nežnoj boji Silver Shaded (NS 11). Njen prefinjeni izgled, kvalitetan tip i nežna srebrna dlaka daju joj posebnu eleganciju, ali ono što je čini zaista posebnom nije samo njena lepota - već njen jedinstveni karakter. Nežna, umiljata, mazna i puna ljubavi, Barbie je svojim prisustvom zauzela posebno mesto u našoj porodici. Njena blaga narav, toplina i nežnost svakodnevno nas podsećaju koliko su mačke posebna bića. Neizmerno smo ponosni na nju i na sve što ona predstavlja za naš uzgoj. Ona je bila prva - mačka koja je u nama probudila želju da sanjamo veće, da učimo, napredujemo i još snažnije se posvetimo svetu britanskih kratkodlakih mačaka. Za nas, Amazonite Barbie će zauvek biti mnogo više od prelepe ženke. Ona je srce početka naše priče - predivno biće od kojeg je započeo put Matriks Cattery.",
     facts: {
-      Boja: "Golden shaded point",
-      Uloga: "Majka budućih legala",
-      Karakter: "Privržena i stabilna",
+      Boja: "Silver Shaded (NS 11)",
+      Pol: "Ženka",
+      Uloga: "Prva ženka u našoj priči",
     },
   },
   {
     type: "cat",
-    name: "Matriks Aurora",
+    name: "BELVITA VEGA MATIS",
     label: "Ženka",
-    status: "Planirana parenja",
-    image: "img/774334633_1373186098294978_6326225201167133145_n.jpg",
+    status: "Seal Goldenpoint Shaded",
+    sort_order: 3,
+    image: "img/BELVITA VEGA MATIS/Screenshot_20260702_151105_Gallery.jpg",
     gallery: [
-      "img/774334633_1373186098294978_6326225201167133145_n.jpg",
-      "img/775995434_2085933572016337_7493598912630596714_n.jpg",
-      "img/774087664_1379770473558784_3096747192544971024_n.jpg",
+      "img/BELVITA VEGA MATIS/Screenshot_20260702_151105_Gallery.jpg",
+      "img/BELVITA VEGA MATIS/20260604_215612.jpg",
+      "img/BELVITA VEGA MATIS/20260604_215616.jpg",
+      "img/BELVITA VEGA MATIS/20260612_164949.jpg",
+      "img/BELVITA VEGA MATIS/20260705_234839.jpg",
+      "img/BELVITA VEGA MATIS/IMG-4000c5f21ff3f48f022a917a913b26ef-V.jpg",
+      "img/BELVITA VEGA MATIS/Screenshot_20260423_084400_Facebook.jpg",
     ],
-    text: "Aurora je mačka mekog izraza, kompaktne građe i izrazito društvene naravi. Posebno cenimo njen odnos prema ljudima i mirnoću u svakodnevnom životu.",
+    text: "Belvita Vega Matis zauzima posebno mesto u priči Matriks Cattery. Ona je naša druga ženka i predivna predstavnica britanske kratkodlake rase u izuzetno atraktivnoj i nežnoj boji Seal Goldenpoint Shaded (NY 11 33). Potiče od vrhunskih šampiona, što se jasno ogleda u njenoj izuzetnoj lepoti, kvalitetu i elegantnom izgledu. Njeno poreklo nosi pažljivo birane krvne linije, ali ono što nas kod nje posebno očarava jeste savršen spoj prefinjene lepote i izuzetnog karaktera. Belvita je nežna, umiljata, privržena i neverovatno prijatne naravi. Njena lepota privlači pažnju na prvi pogled, ali je njen divan karakter ono zbog čega je svakoga dana volimo još više. Svojom nežnošću, toplinom i posebnom energijom unosi radost u naš dom i postala je voljeni član naše porodice. Neizmerno smo ponosni što je deo naše uzgojne priče i što svojim kvalitetom, vrhunskim poreklom i divnim temperamentom predstavlja sve ono čemu težimo u Matriks Cattery. Za nas Belvita Vega Matis nije samo još jedna prelepa ženka. Ona je spoj vrhunskog šampionskog porekla, izuzetne lepote i nežne duše - upravo onoga što sa mnogo ljubavi želimo da negujemo i prenesemo na buduće generacije u našem uzgoju.",
     facts: {
-      Boja: "Shaded point",
-      Tip: "Kompaktna građa",
-      Karakter: "Društvena i radoznala",
+      Boja: "Seal Goldenpoint Shaded (NY 11 33)",
+      Pol: "Ženka",
+      Poreklo: "Vrhunski šampioni",
     },
   },
   {
@@ -166,13 +188,19 @@ function jsonColumn(value, fallback) {
 }
 
 function animalInsertSql(item) {
-  return `INSERT INTO animals (type, name, label, status, image, gallery, text, facts, sort_order)
-    VALUES (${q(item.type)}, ${q(item.name)}, ${q(item.label)}, ${q(item.status)}, ${q(item.image)}, ${q(JSON.stringify(item.gallery || []))}, ${q(item.text)}, ${q(JSON.stringify(item.facts || {}))}, 0);`;
+  return `INSERT INTO animals (type, name, label, status, image, gallery, text, facts, translations, sort_order)
+    VALUES (${q(item.type)}, ${q(item.name)}, ${q(item.label)}, ${q(item.status)}, ${q(item.image)}, ${q(JSON.stringify(item.gallery || []))}, ${q(item.text)}, ${q(JSON.stringify(item.facts || {}))}, ${q(JSON.stringify(item.translations || {}))}, ${Number(item.sort_order || 0)});`;
 }
 
 function postInsertSql(item) {
-  return `INSERT INTO posts (title, category, image, media, text, published_at)
-    VALUES (${q(item.title)}, ${q(item.category)}, ${q(item.image)}, ${q(JSON.stringify(item.media || []))}, ${q(item.text)}, datetime('now'));`;
+  return `INSERT INTO posts (title, category, image, media, text, translations, published_at)
+    VALUES (${q(item.title)}, ${q(item.category)}, ${q(item.image)}, ${q(JSON.stringify(item.media || []))}, ${q(item.text)}, ${q(JSON.stringify(item.translations || {}))}, datetime('now'));`;
+}
+
+async function ensureColumn(table, column, definition) {
+  const columns = await runSql(`PRAGMA table_info(${table});`, true);
+  if (columns.some((item) => item.name === column)) return;
+  await runSql(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition};`);
 }
 
 async function initDb() {
@@ -190,6 +218,7 @@ async function initDb() {
       gallery TEXT DEFAULT '[]',
       text TEXT DEFAULT '',
       facts TEXT DEFAULT '{}',
+      translations TEXT DEFAULT '{}',
       sort_order INTEGER DEFAULT 0,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -201,10 +230,14 @@ async function initDb() {
       image TEXT DEFAULT '',
       media TEXT DEFAULT '[]',
       text TEXT DEFAULT '',
+      translations TEXT DEFAULT '{}',
       published_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  await ensureColumn("animals", "translations", "TEXT DEFAULT '{}'");
+  await ensureColumn("posts", "translations", "TEXT DEFAULT '{}'");
 
   const counts = await runSql(
     "SELECT (SELECT COUNT(*) FROM animals) AS animals, (SELECT COUNT(*) FROM posts) AS posts;",
@@ -227,6 +260,7 @@ async function getContent() {
     ...item,
     gallery: jsonColumn(item.gallery, []),
     facts: jsonColumn(item.facts, {}),
+    translations: jsonColumn(item.translations, {}),
   }));
 
   return {
@@ -236,6 +270,7 @@ async function getContent() {
       ...post,
       date: post.category,
       media: jsonColumn(post.media, []),
+      translations: jsonColumn(post.translations, {}),
     })),
   };
 }
@@ -287,6 +322,172 @@ function safeJsonArray(value) {
 
 function safeJsonObject(value) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+}
+
+function normalizeTranslationMap(value) {
+  const source = safeJsonObject(value);
+  return Object.fromEntries(
+    Object.keys(translationLanguages)
+      .map((lang) => [lang, safeJsonObject(source[lang])])
+      .filter(([, entry]) => Object.keys(entry).length > 0),
+  );
+}
+
+function stripJsonFence(value) {
+  return String(value || "")
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+}
+
+async function translateWithOpenAi(payload, kind) {
+  if (!openAiApiKey) return {};
+
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${openAiApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: openAiTranslationModel,
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: [
+            "You translate Serbian cattery website content.",
+            "Return strict JSON only.",
+            "Keep cat names, cattery name, color codes, breed codes and file-like tokens unchanged.",
+            "Translate labels and prose naturally for a premium editorial pet website.",
+          ].join(" "),
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            targetLanguages: translationLanguages,
+            contentType: kind,
+            sourceLanguage: "Serbian",
+            fields: payload,
+            expectedShape: Object.fromEntries(Object.keys(translationLanguages).map((lang) => [lang, payload])),
+          }),
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`OpenAI translation failed: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return normalizeTranslationMap(JSON.parse(stripJsonFence(data.choices?.[0]?.message?.content)));
+}
+
+async function translateWithDeepL(payload) {
+  if (!deepLApiKey) return {};
+
+  const entries = [];
+  Object.entries(payload).forEach(([field, value]) => {
+    if (typeof value === "string") entries.push({ path: [field], value });
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      Object.entries(value).forEach(([key, fact]) => entries.push({ path: [field, key], value: `${key}: ${fact}` }));
+    }
+  });
+
+  const result = {};
+  for (const [lang, deeplLang] of Object.entries({ en: "EN-US", ru: "RU", de: "DE", it: "IT" })) {
+    const params = new URLSearchParams();
+    params.set("auth_key", deepLApiKey);
+    params.set("target_lang", deeplLang);
+    entries.forEach((entry) => params.append("text", entry.value));
+
+    const response = await fetch(deepLApiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params,
+    });
+    if (!response.ok) throw new Error(`DeepL translation failed: ${response.status}`);
+
+    const data = await response.json();
+    result[lang] = {};
+    entries.forEach((entry, index) => {
+      const translated = data.translations?.[index]?.text || entry.value;
+      if (entry.path.length === 1) {
+        result[lang][entry.path[0]] = translated;
+        return;
+      }
+      const [field, originalKey] = entry.path;
+      const separator = translated.indexOf(":");
+      const translatedKey = separator > 0 ? translated.slice(0, separator).trim() : originalKey;
+      const translatedValue = separator > 0 ? translated.slice(separator + 1).trim() : translated;
+      result[lang][field] = { ...(result[lang][field] || {}), [translatedKey]: translatedValue };
+    });
+  }
+  return normalizeTranslationMap(result);
+}
+
+async function translatePayload(payload, kind) {
+  if (!translationProvider) return {};
+  try {
+    if (translationProvider === "deepl") return await translateWithDeepL(payload);
+    return await translateWithOpenAi(payload, kind);
+  } catch (error) {
+    console.warn(error.message);
+    return {};
+  }
+}
+
+async function prepareAnimal(item, existingTranslations = {}) {
+  const payload = {
+    label: cleanText(item.label, 180),
+    status: cleanText(item.status, 180),
+    text: cleanText(item.text, 6000),
+    facts: safeJsonObject(item.facts),
+  };
+  const translations = await translatePayload(payload, "animal");
+  return {
+    ...item,
+    translations: Object.keys(translations).length ? translations : normalizeTranslationMap(existingTranslations),
+  };
+}
+
+async function preparePost(item, existingTranslations = {}) {
+  const payload = {
+    title: cleanText(item.title, 220),
+    category: cleanText(item.category, 120),
+    text: cleanText(item.text, 6000),
+  };
+  const translations = await translatePayload(payload, "blog_post");
+  return {
+    ...item,
+    translations: Object.keys(translations).length ? translations : normalizeTranslationMap(existingTranslations),
+  };
+}
+
+function hasTranslation(item, lang) {
+  return Object.keys(safeJsonObject(item.translations?.[lang])).length > 0;
+}
+
+async function translateMissingContent(lang) {
+  if (!translationLanguages[lang]) return { ok: false, error: "Nepodržan jezik." };
+  if (!translationProvider) return { ok: false, error: "Translation API nije podešen." };
+
+  const content = await getContent();
+  for (const animal of [...content.cats, ...content.kittens]) {
+    if (hasTranslation(animal, lang)) continue;
+    const prepared = await prepareAnimal(animal, animal.translations);
+    await runSql(`UPDATE animals SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(animal.id)};`);
+  }
+  for (const post of content.posts) {
+    if (hasTranslation(post, lang)) continue;
+    const prepared = await preparePost(post, post.translations);
+    await runSql(`UPDATE posts SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(post.id)};`);
+  }
+
+  return { ok: true, content: await getContent() };
 }
 
 async function parseJson(req) {
@@ -397,6 +598,13 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  const translateMatch = url.pathname.match(/^\/api\/translations\/([a-z]{2})$/);
+  if (req.method === "POST" && translateMatch) {
+    const result = await translateMissingContent(translateMatch[1]);
+    send(res, result.ok ? 200 : 503, result);
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/inquiry") {
     const body = await parseJson(req);
     const inquiry = {
@@ -417,9 +625,11 @@ async function handleApi(req, res, url) {
     const sent = await sendWithSendmail({
       to: contactEmail,
       from: inquiry.email,
-      subject: `Upit za mače: ${inquiry.kitten || "Matriks Cattery"}`,
+      subject: inquiry.kitten === "Kontakt forma"
+        ? "Poruka sa kontakt forme"
+        : `Upit za mače: ${inquiry.kitten || "Matriks Cattery"}`,
       text: [
-        `Upit za: ${inquiry.kitten || "mače"}`,
+        inquiry.kitten === "Kontakt forma" ? "Kontakt forma" : `Upit za: ${inquiry.kitten || "mače"}`,
         `Ime: ${inquiry.name}`,
         `Email: ${inquiry.email}`,
         "",
@@ -442,6 +652,20 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  if (req.method === "POST" && url.pathname === "/api/admin/translate-all") {
+    const content = await getContent();
+    for (const animal of [...content.cats, ...content.kittens]) {
+      const prepared = await prepareAnimal(animal, animal.translations);
+      await runSql(`UPDATE animals SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(animal.id)};`);
+    }
+    for (const post of content.posts) {
+      const prepared = await preparePost(post, post.translations);
+      await runSql(`UPDATE posts SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(post.id)};`);
+    }
+    send(res, 200, await getContent());
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/upload") {
     const buffer = await readBuffer(req);
     const file = parseMultipart(buffer, req.headers["content-type"] || "");
@@ -456,12 +680,13 @@ async function handleApi(req, res, url) {
 
   if (req.method === "POST" && url.pathname === "/api/animals") {
     const item = await parseJson(req);
-    await runSql(animalInsertSql({
+    const prepared = await prepareAnimal({
       ...item,
       type: item.type === "kitten" ? "kitten" : "cat",
       gallery: safeJsonArray(item.gallery),
       facts: safeJsonObject(item.facts),
-    }));
+    });
+    await runSql(animalInsertSql(prepared));
     send(res, 201, await getContent());
     return;
   }
@@ -469,15 +694,23 @@ async function handleApi(req, res, url) {
   const animalMatch = url.pathname.match(/^\/api\/animals\/(\d+)$/);
   if (animalMatch && req.method === "PUT") {
     const item = await parseJson(req);
+    const existing = await runSql(`SELECT translations FROM animals WHERE id = ${Number(animalMatch[1])};`, true);
+    const prepared = await prepareAnimal({
+      ...item,
+      type: item.type === "kitten" ? "kitten" : "cat",
+      gallery: safeJsonArray(item.gallery),
+      facts: safeJsonObject(item.facts),
+    }, jsonColumn(existing[0]?.translations, {}));
     await runSql(`UPDATE animals SET
-      type = ${q(item.type === "kitten" ? "kitten" : "cat")},
-      name = ${q(item.name)},
-      label = ${q(item.label)},
-      status = ${q(item.status)},
-      image = ${q(item.image)},
-      gallery = ${q(JSON.stringify(safeJsonArray(item.gallery)))},
-      text = ${q(item.text)},
-      facts = ${q(JSON.stringify(safeJsonObject(item.facts)))},
+      type = ${q(prepared.type)},
+      name = ${q(prepared.name)},
+      label = ${q(prepared.label)},
+      status = ${q(prepared.status)},
+      image = ${q(prepared.image)},
+      gallery = ${q(JSON.stringify(prepared.gallery))},
+      text = ${q(prepared.text)},
+      facts = ${q(JSON.stringify(prepared.facts))},
+      translations = ${q(JSON.stringify(prepared.translations))},
       updated_at = CURRENT_TIMESTAMP
       WHERE id = ${Number(animalMatch[1])};`);
     send(res, 200, await getContent());
@@ -492,10 +725,11 @@ async function handleApi(req, res, url) {
 
   if (req.method === "POST" && url.pathname === "/api/posts") {
     const item = await parseJson(req);
-    await runSql(postInsertSql({
+    const prepared = await preparePost({
       ...item,
       media: safeJsonArray(item.media),
-    }));
+    });
+    await runSql(postInsertSql(prepared));
     send(res, 201, await getContent());
     return;
   }
@@ -503,12 +737,18 @@ async function handleApi(req, res, url) {
   const postMatch = url.pathname.match(/^\/api\/posts\/(\d+)$/);
   if (postMatch && req.method === "PUT") {
     const item = await parseJson(req);
+    const existing = await runSql(`SELECT translations FROM posts WHERE id = ${Number(postMatch[1])};`, true);
+    const prepared = await preparePost({
+      ...item,
+      media: safeJsonArray(item.media),
+    }, jsonColumn(existing[0]?.translations, {}));
     await runSql(`UPDATE posts SET
-      title = ${q(item.title)},
-      category = ${q(item.category)},
-      image = ${q(item.image)},
-      media = ${q(JSON.stringify(safeJsonArray(item.media)))},
-      text = ${q(item.text)},
+      title = ${q(prepared.title)},
+      category = ${q(prepared.category)},
+      image = ${q(prepared.image)},
+      media = ${q(JSON.stringify(prepared.media))},
+      text = ${q(prepared.text)},
+      translations = ${q(JSON.stringify(prepared.translations))},
       updated_at = CURRENT_TIMESTAMP
       WHERE id = ${Number(postMatch[1])};`);
     send(res, 200, await getContent());
