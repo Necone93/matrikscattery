@@ -498,9 +498,92 @@ const animalTranslationFallbacks = {
   },
 };
 
+const postTranslationFallbacks = {
+  1: {
+    en: {
+      title: "Best in 2026",
+      category: "Shows",
+      text: "A major recognition for our breeding program: CH BriZodiac Floki won the title Best Blue Golden Shaded Point British Shorthair of the Year.",
+    },
+    ru: {
+      title: "Лучший в 2026 году",
+      category: "Выставки",
+      text: "Большое признание для нашего питомника: CH BriZodiac Floki получил титул Best Blue Golden Shaded Point British Shorthair of the Year.",
+    },
+    de: {
+      title: "Bester im Jahr 2026",
+      category: "Ausstellungen",
+      text: "Eine große Anerkennung für unsere Zucht: CH BriZodiac Floki erhielt den Titel Best Blue Golden Shaded Point British Shorthair of the Year.",
+    },
+    it: {
+      title: "Migliore nel 2026",
+      category: "Esposizioni",
+      text: "Un grande riconoscimento per il nostro allevamento: CH BriZodiac Floki ha ottenuto il titolo Best Blue Golden Shaded Point British Shorthair of the Year.",
+    },
+  },
+  2: {
+    en: {
+      title: "Weekend at the Show",
+      category: "News",
+      text: "Moments from the show area, meetings with judges and an atmosphere we especially love to share with friends of the cattery.",
+    },
+    ru: {
+      title: "Выходные на выставке",
+      category: "Новости",
+      text: "Моменты из выставочного пространства, встречи с судьями и атмосфера, которой мы особенно любим делиться с друзьями питомника.",
+    },
+    de: {
+      title: "Wochenende auf der Ausstellung",
+      category: "Neuigkeiten",
+      text: "Momente aus dem Ausstellungsbereich, Begegnungen mit Richtern und eine Atmosphäre, die wir besonders gern mit Freunden der Cattery teilen.",
+    },
+    it: {
+      title: "Weekend in esposizione",
+      category: "Novità",
+      text: "Momenti dallo spazio espositivo, incontri con i giudici e un'atmosfera che amiamo condividere con gli amici dell'allevamento.",
+    },
+  },
+  3: {
+    en: {
+      title: "Life in the Cattery",
+      category: "Journal",
+      text: "Short notes, photographs and video records from the everyday life of our cats and kittens.",
+    },
+    ru: {
+      title: "Жизнь в питомнике",
+      category: "Дневник",
+      text: "Короткие заметки, фотографии и видеозаписи из повседневной жизни наших кошек и котят.",
+    },
+    de: {
+      title: "Leben in der Cattery",
+      category: "Tagebuch",
+      text: "Kurze Notizen, Fotos und Videoaufnahmen aus dem Alltag unserer Katzen und Kitten.",
+    },
+    it: {
+      title: "Vita nell'allevamento",
+      category: "Diario",
+      text: "Brevi note, fotografie e video dalla vita quotidiana dei nostri gatti e gattini.",
+    },
+  },
+};
+
 function localizeItem(item) {
-  const translated = item.translations?.[currentLang] || animalTranslationFallbacks[item.id]?.[currentLang];
-  return translated ? { ...item, ...translated, facts: translated.facts || item.facts } : item;
+  const isPost = Object.prototype.hasOwnProperty.call(item, "title");
+  const fallback = isPost ? postTranslationFallbacks[item.id]?.[currentLang] : animalTranslationFallbacks[item.id]?.[currentLang];
+  const translated = item.translations?.[currentLang] || fallback;
+  if (!translated) return item;
+
+  const localized = {
+    ...item,
+    ...translated,
+    facts: translated.facts || item.facts,
+  };
+
+  if (isPost) {
+    localized.date = translated.date || translated.category || item.date;
+  }
+
+  return localized;
 }
 
 async function refreshContent() {

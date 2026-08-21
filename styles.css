@@ -1654,7 +1654,7 @@ footer img {
 
 .blog-page .blog-list {
   height: 100%;
-  width: min(1320px, 100%);
+  width: min(1120px, 100%);
   margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
@@ -1685,9 +1685,9 @@ footer img {
 }
 
 .blog-page .blog-item {
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   min-height: 0;
-  height: 280px;
+  height: 220px;
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 8px;
@@ -1710,15 +1710,15 @@ footer img {
   display: grid;
   grid-template-rows: auto auto auto;
   align-content: center;
-  gap: 14px;
+  gap: 12px;
   min-height: 0;
-  padding: clamp(24px, 3vw, 34px);
+  padding: clamp(20px, 2.6vw, 28px);
   background: rgba(255, 253, 249, 0.58);
 }
 
 .blog-page .blog-copy h3 {
   max-width: 720px;
-  font-size: clamp(1.45rem, 1.85vw, 2.15rem);
+  font-size: clamp(1.28rem, 1.55vw, 1.85rem);
   line-height: 1.04;
 }
 
@@ -1733,7 +1733,7 @@ footer img {
 .blog-page .text-link {
   margin-top: 0;
   align-self: start;
-  font-size: clamp(0.72rem, 0.82vw, 0.9rem);
+  font-size: clamp(0.68rem, 0.76vw, 0.82rem);
   letter-spacing: 0.08em;
 }
 
@@ -2524,17 +2524,17 @@ footer img {
   }
 
   .blog-page .blog-item {
-    grid-template-columns: minmax(160px, 34%) minmax(0, 1fr);
-    height: 220px;
+    grid-template-columns: minmax(140px, 32%) minmax(0, 1fr);
+    height: 178px;
   }
 
   .blog-page .blog-copy {
-    padding: 20px;
+    padding: 16px;
     gap: 8px;
   }
 
   .blog-page .blog-copy h3 {
-    font-size: clamp(1.55rem, 4vw, 2.1rem);
+    font-size: clamp(1.2rem, 3.2vw, 1.65rem);
   }
 
   .detail-layout {
@@ -2786,24 +2786,27 @@ footer img {
 
   .blog-page .blog-list {
     gap: 12px;
+    justify-items: center;
   }
 
   .blog-page .blog-item {
     grid-template-columns: 1fr;
     height: auto;
+    width: min(320px, 100%);
   }
 
   .blog-page .blog-item img {
     height: auto;
-    max-height: 260px;
+    max-height: 170px;
   }
 
   .blog-page .blog-copy {
-    padding: 16px;
+    padding: 12px 14px 14px;
+    gap: 8px;
   }
 
   .blog-page .blog-copy h3 {
-    font-size: clamp(1.45rem, 8vw, 2rem);
+    font-size: clamp(1.15rem, 6vw, 1.45rem);
   }
 
   .blog-page .blog-copy p {
