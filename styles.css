@@ -3187,3 +3187,56 @@ footer img {
     max-height: 210px;
   }
 }
+
+@media (max-width: 620px) {
+  .home-page .hero-stage {
+    gap: 18px;
+    padding-bottom: 20px;
+  }
+
+  .home-page .hero-copy,
+  .home-page .hero-cat,
+  .home-page .hero-social {
+    width: 100%;
+  }
+
+  .home-page .hero-cat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .home-page .hero-cat img {
+    width: min(100%, 540px);
+    max-width: 100%;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .home-page .hero-social {
+    align-self: center;
+    justify-content: center;
+    justify-items: center;
+    text-align: center;
+    margin-top: auto;
+  }
+
+  .home-page .hero-social-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .info-page.frame-page main {
+    height: calc(100svh - 12px);
+    overflow: hidden;
+  }
+
+  .info-page .breed {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 28px;
+    scroll-padding-bottom: 28px;
+  }
+}
