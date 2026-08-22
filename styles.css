@@ -3474,22 +3474,22 @@ footer img {
 
   .home-page .hero-stage {
     width: calc(100% - 16px);
-    height: auto;
-    max-height: calc(100svh - 16px);
+    height: calc(100svh - 16px);
+    max-height: none;
     min-height: 0;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 68px auto auto auto;
+    grid-template-rows: 68px minmax(0, auto) minmax(0, 1fr) auto;
     grid-template-areas:
       "top"
       "copy"
       "image"
       "social";
-    align-content: start;
-    row-gap: clamp(14px, 2svh, 22px);
+    align-content: stretch;
+    row-gap: clamp(12px, 1.8svh, 20px);
     padding: 0 clamp(24px, 5vw, 52px) clamp(18px, 2.4svh, 28px);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
   }
 
   .home-page .hero-copy {
@@ -3521,16 +3521,22 @@ footer img {
 
   .home-page .hero-cat {
     justify-self: center;
-    align-self: start;
+    align-self: stretch;
     width: min(760px, 100%);
+    height: 100%;
+    min-height: 0;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
   }
 
   .home-page .hero-cat img {
     width: 100%;
-    height: auto;
-    max-height: min(34svh, 330px);
-    object-fit: cover;
+    height: 100%;
+    max-height: 100%;
+    object-fit: contain;
     object-position: center center;
   }
 
@@ -3539,7 +3545,7 @@ footer img {
     width: 100%;
     justify-self: center;
     justify-items: center;
-    align-self: start;
+    align-self: end;
     margin: 0;
     padding-top: 0;
     text-align: center;
@@ -3552,5 +3558,51 @@ footer img {
   .home-page .hero-social p {
     justify-self: center;
     text-align: center;
+  }
+}
+
+/* Final race-page scroll guard: main is the glass frame, .breed is the only scroller. */
+.info-page.frame-page main {
+  height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  min-height: 0 !important;
+  grid-template-rows: 74px minmax(0, 1fr) !important;
+  overflow: hidden !important;
+}
+
+.info-page.frame-page .breed {
+  grid-row: 2 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.info-page.frame-page .breed-image img {
+  width: 100%;
+  max-height: none;
+  object-fit: contain !important;
+  object-position: center center;
+  background: rgba(255, 253, 249, 0.26);
+}
+
+@media (max-width: 920px) {
+  .info-page.frame-page main {
+    height: calc(100svh - 20px) !important;
+    grid-template-rows: 68px minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .info-page.frame-page main {
+    height: calc(100svh - 12px) !important;
+    grid-template-rows: 62px minmax(0, 1fr) !important;
+  }
+
+  .info-page.frame-page .breed {
+    padding: 16px 14px 28px !important;
   }
 }
