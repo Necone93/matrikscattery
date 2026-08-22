@@ -3192,15 +3192,15 @@ footer img {
   .home-page .hero-stage {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 62px auto auto minmax(10px, 1fr) auto;
+    grid-template-rows: 62px auto minmax(220px, 1fr) auto;
     grid-template-areas:
       "top"
       "copy"
       "image"
-      "spacer"
       "social";
     padding-bottom: 20px;
     row-gap: 18px;
+    overflow: hidden;
   }
 
   .home-page .hero-copy,
@@ -3213,13 +3213,15 @@ footer img {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 0;
   }
 
   .home-page .hero-cat img {
     width: 100%;
+    height: 100%;
     max-width: 100%;
     max-height: none;
-    object-fit: contain;
+    object-fit: cover;
   }
 
   .home-page .hero-social {
@@ -3237,27 +3239,33 @@ footer img {
 
   .info-page.frame-page main {
     height: calc(100svh - 12px);
+    grid-template-rows: 62px minmax(0, 1fr);
     overflow: hidden;
   }
 
   .info-page .breed {
-    height: 100%;
+    height: auto;
+    max-height: 100%;
     min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: 28px;
     scroll-padding-bottom: 28px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
 }
 
 @media (max-width: 420px) {
   .home-page .hero-stage {
+    grid-template-rows: 62px auto minmax(210px, 1fr) auto;
     row-gap: 16px;
     padding-bottom: 18px;
   }
 
   .home-page .hero-cat img {
     width: 100%;
+    height: 100%;
     max-height: none;
   }
 }
