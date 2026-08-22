@@ -3598,11 +3598,29 @@ footer img {
 
 @media (max-width: 620px) {
   .info-page.frame-page main {
+    position: relative !important;
     height: calc(100svh - 12px) !important;
     grid-template-rows: 62px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  .info-page.frame-page .frame-topline {
+    position: relative;
+    z-index: 5;
   }
 
   .info-page.frame-page .breed {
+    position: absolute !important;
+    inset: 62px 0 0 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
     padding: 16px 14px 28px !important;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
   }
 }
