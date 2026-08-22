@@ -3190,8 +3190,17 @@ footer img {
 
 @media (max-width: 620px) {
   .home-page .hero-stage {
-    gap: 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 62px auto auto minmax(10px, 1fr) auto;
+    grid-template-areas:
+      "top"
+      "copy"
+      "image"
+      "spacer"
+      "social";
     padding-bottom: 20px;
+    row-gap: 18px;
   }
 
   .home-page .hero-copy,
@@ -3207,7 +3216,7 @@ footer img {
   }
 
   .home-page .hero-cat img {
-    width: min(100%, 540px);
+    width: 100%;
     max-width: 100%;
     max-height: none;
     object-fit: contain;
@@ -3218,7 +3227,7 @@ footer img {
     justify-content: center;
     justify-items: center;
     text-align: center;
-    margin-top: auto;
+    margin-top: 0;
   }
 
   .home-page .hero-social-links {
@@ -3238,5 +3247,17 @@ footer img {
     overflow-x: hidden;
     padding-bottom: 28px;
     scroll-padding-bottom: 28px;
+  }
+}
+
+@media (max-width: 420px) {
+  .home-page .hero-stage {
+    row-gap: 16px;
+    padding-bottom: 18px;
+  }
+
+  .home-page .hero-cat img {
+    width: 100%;
+    max-height: none;
   }
 }
