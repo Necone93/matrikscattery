@@ -3670,8 +3670,11 @@ footer img {
   .info-page.frame-page main {
     position: relative !important;
     height: calc(100svh - 12px) !important;
-    grid-template-rows: 62px minmax(0, 1fr) !important;
-    overflow: hidden !important;
+    grid-template-rows: 62px auto !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
   }
 
   .info-page.frame-page .frame-topline {
@@ -3680,8 +3683,9 @@ footer img {
   }
 
   .info-page.frame-page .breed {
-    position: absolute !important;
-    inset: 62px 0 0 0 !important;
+    position: relative !important;
+    inset: auto !important;
+    grid-row: 2 !important;
     display: flex !important;
     flex-direction: column !important;
     height: auto !important;
@@ -3689,8 +3693,159 @@ footer img {
     min-height: 0 !important;
     padding: 16px 14px 28px !important;
     overflow-x: hidden !important;
-    overflow-y: scroll !important;
+    overflow-y: visible !important;
     -webkit-overflow-scrolling: touch !important;
     overscroll-behavior: contain !important;
+  }
+
+  .info-page.frame-page .breed-image {
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .info-page.frame-page .breed-image img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+}
+
+@media (max-width: 620px) {
+  body.home-page,
+  .home-page main,
+  .home-page .hero {
+    height: 100svh !important;
+    min-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .home-page .hero-stage {
+    width: calc(100% - 12px) !important;
+    height: calc(100svh - 12px) !important;
+    min-height: 0 !important;
+    margin: 6px auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 58px minmax(0, auto) minmax(130px, 30svh) 46px !important;
+    grid-template-areas:
+      "top"
+      "copy"
+      "image"
+      "social" !important;
+    row-gap: 8px !important;
+    padding: 0 14px 10px !important;
+    overflow: hidden !important;
+  }
+
+  .home-page .hero-copy {
+    align-self: start !important;
+    display: grid !important;
+    gap: 8px !important;
+    min-height: 0 !important;
+    padding-top: 6px !important;
+  }
+
+  .home-page .hero-copy .kicker {
+    font-size: 0.68rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .home-page .hero-copy h1 {
+    font-size: clamp(2.05rem, 10.8vw, 3rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .home-page .hero-copy p:not(.kicker) {
+    font-size: 0.92rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .home-page #heroText {
+    max-height: none !important;
+    overflow: hidden !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  .home-page .hero-actions {
+    margin-top: 2px !important;
+    gap: 8px !important;
+  }
+
+  .home-page .hero-actions .button {
+    min-height: 34px !important;
+    padding: 8px 14px !important;
+    font-size: 0.76rem !important;
+  }
+
+  .home-page .hero-cat {
+    align-self: stretch !important;
+    justify-self: center !important;
+    width: min(340px, 86vw) !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .home-page .hero-cat img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+
+  .home-page .hero-social {
+    align-self: stretch !important;
+    align-content: center !important;
+    gap: 3px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .home-page .hero-social-links {
+    gap: 14px !important;
+  }
+
+  .home-page .hero-social p {
+    margin: 0 !important;
+    font-size: 0.72rem !important;
+    line-height: 1.25 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page .hero-stage {
+    grid-template-rows: 54px minmax(0, auto) minmax(112px, 26svh) 42px !important;
+    row-gap: 6px !important;
+    padding-inline: 12px !important;
+  }
+
+  .home-page .hero-copy h1 {
+    font-size: clamp(1.85rem, 10vw, 2.5rem) !important;
+  }
+
+  .home-page .hero-copy p:not(.kicker) {
+    font-size: 0.84rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .home-page #heroText {
+    -webkit-line-clamp: 4 !important;
+  }
+
+  .home-page .hero-actions .button {
+    min-height: 32px !important;
+    padding: 7px 12px !important;
+    font-size: 0.7rem !important;
   }
 }
