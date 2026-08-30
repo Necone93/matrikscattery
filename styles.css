@@ -4007,3 +4007,63 @@ footer img {
     max-height: 38svh !important;
   }
 }
+
+/* Git deploy pass: make mobile home images clearly larger and remove leftover visual gap. */
+@media (max-width: 620px) {
+  .home-page .hero-stage {
+    grid-template-rows: 54px minmax(0, auto) minmax(220px, 48svh) 36px !important;
+    row-gap: 0 !important;
+    padding: 0 10px 5px !important;
+  }
+
+  .home-page .hero-copy {
+    gap: 4px !important;
+    padding-top: 2px !important;
+  }
+
+  .home-page .hero-copy h1 {
+    font-size: clamp(2rem, 10.6vw, 2.85rem) !important;
+    line-height: 0.94 !important;
+  }
+
+  .home-page .hero-copy p:not(.kicker) {
+    font-size: 0.94rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .home-page #heroText {
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-page .hero-actions .button {
+    min-height: 30px !important;
+    padding: 6px 12px !important;
+  }
+
+  .home-page .hero-cat {
+    align-self: start !important;
+    width: min(540px, 100vw) !important;
+    max-height: 48svh !important;
+    margin-top: -6px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page .hero-stage {
+    grid-template-rows: 52px minmax(0, auto) minmax(190px, 44svh) 34px !important;
+  }
+
+  .home-page .hero-copy h1 {
+    font-size: clamp(1.84rem, 9.8vw, 2.45rem) !important;
+  }
+
+  .home-page .hero-copy p:not(.kicker) {
+    font-size: 0.86rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .home-page .hero-cat {
+    width: min(450px, 100vw) !important;
+    max-height: 44svh !important;
+  }
+}
