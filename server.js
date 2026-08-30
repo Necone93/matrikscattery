@@ -269,14 +269,32 @@ function jsonColumn(value, fallback) {
   }
 }
 
+function normalizePostBlocks(blocks, text = "", media = []) {
+  const normalized = (Array.isArray(blocks) ? blocks : [])
+    .map((block) => {
+      if (block?.type === "media") {
+        return { type: "media", items: safeJsonArray(block.items).filter(Boolean) };
+      }
+      return { type: "text", text: cleanText(block?.text || "", 6000) };
+    })
+    .filter((block) => (block.type === "media" ? block.items.length : block.text.trim()));
+
+  if (normalized.length) return normalized;
+
+  const fallback = [];
+  if (String(text || "").trim()) fallback.push({ type: "text", text: cleanText(text, 6000) });
+  if (safeJsonArray(media).length) fallback.push({ type: "media", items: safeJsonArray(media) });
+  return fallback;
+}
+
 function animalInsertSql(item) {
   return `INSERT INTO animals (type, name, label, status, image, gallery, text, facts, translations, sort_order)
     VALUES (${q(item.type)}, ${q(item.name)}, ${q(item.label)}, ${q(item.status)}, ${q(item.image)}, ${q(JSON.stringify(item.gallery || []))}, ${q(item.text)}, ${q(JSON.stringify(item.facts || {}))}, ${q(JSON.stringify(item.translations || {}))}, ${Number(item.sort_order || 0)});`;
 }
 
 function postInsertSql(item) {
-  return `INSERT INTO posts (title, category, image, media, text, translations, published_at)
-    VALUES (${q(item.title)}, ${q(item.category)}, ${q(item.image)}, ${q(JSON.stringify(item.media || []))}, ${q(item.text)}, ${q(JSON.stringify(item.translations || {}))}, datetime('now'));`;
+  return `INSERT INTO posts (title, category, image, media, text, blocks, translations, published_at)
+    VALUES (${q(item.title)}, ${q(item.category)}, ${q(item.image)}, ${q(JSON.stringify(item.media || []))}, ${q(item.text)}, ${q(JSON.stringify(item.blocks || []))}, ${q(JSON.stringify(item.translations || {}))}, datetime('now'));`;
 }
 
 async function ensureColumn(table, column, definition) {
@@ -312,6 +330,7 @@ async function initDb() {
       image TEXT DEFAULT '',
       media TEXT DEFAULT '[]',
       text TEXT DEFAULT '',
+      blocks TEXT DEFAULT '[]',
       translations TEXT DEFAULT '{}',
       published_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -320,6 +339,7 @@ async function initDb() {
 
   await ensureColumn("animals", "translations", "TEXT DEFAULT '{}'");
   await ensureColumn("posts", "translations", "TEXT DEFAULT '{}'");
+  await ensureColumn("posts", "blocks", "TEXT DEFAULT '[]'");
 
   const counts = await runSql(
     "SELECT (SELECT COUNT(*) FROM animals) AS animals, (SELECT COUNT(*) FROM posts) AS posts;",
@@ -352,6 +372,7 @@ async function getContent() {
       ...post,
       date: post.category,
       media: jsonColumn(post.media, []),
+      blocks: normalizePostBlocks(jsonColumn(post.blocks, []), post.text, jsonColumn(post.media, [])),
       translations: jsonColumn(post.translations, {}),
     })),
   };
@@ -537,14 +558,19 @@ async function prepareAnimal(item, existingTranslations = {}) {
 }
 
 async function preparePost(item, existingTranslations = {}) {
+  const blocks = normalizePostBlocks(item.blocks, item.text, item.media);
+  const text = cleanText(item.text || blocks.filter((block) => block.type === "text").map((block) => block.text).join("\n\n"), 6000);
   const payload = {
     title: cleanText(item.title, 220),
     category: cleanText(item.category, 120),
-    text: cleanText(item.text, 6000),
+    text,
+    blocks,
   };
   const translations = await translatePayload(payload, "blog_post");
   return {
     ...item,
+    text,
+    blocks,
     translations: Object.keys(translations).length ? translations : normalizeTranslationMap(existingTranslations),
   };
 }
@@ -810,6 +836,7 @@ async function handleApi(req, res, url) {
     const prepared = await preparePost({
       ...item,
       media: safeJsonArray(item.media),
+      blocks: normalizePostBlocks(item.blocks, item.text, item.media),
     });
     await runSql(postInsertSql(prepared));
     send(res, 201, await getContent());
@@ -823,6 +850,7 @@ async function handleApi(req, res, url) {
     const prepared = await preparePost({
       ...item,
       media: safeJsonArray(item.media),
+      blocks: normalizePostBlocks(item.blocks, item.text, item.media),
     }, jsonColumn(existing[0]?.translations, {}));
     await runSql(`UPDATE posts SET
       title = ${q(prepared.title)},
@@ -830,6 +858,7 @@ async function handleApi(req, res, url) {
       image = ${q(prepared.image)},
       media = ${q(JSON.stringify(prepared.media))},
       text = ${q(prepared.text)},
+      blocks = ${q(JSON.stringify(prepared.blocks))},
       translations = ${q(JSON.stringify(prepared.translations))},
       updated_at = CURRENT_TIMESTAMP
       WHERE id = ${Number(postMatch[1])};`);

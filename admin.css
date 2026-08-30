@@ -144,7 +144,8 @@ textarea {
   line-height: 1.6;
 }
 
-.media-manager {
+.media-manager,
+.block-manager {
   display: grid;
   gap: 10px;
   padding: 14px;
@@ -166,6 +167,34 @@ textarea {
 .media-list {
   display: grid;
   gap: 8px;
+}
+
+.post-block-list {
+  display: grid;
+  gap: 12px;
+}
+
+.content-block {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+}
+
+.content-block-head,
+.block-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.content-block-head strong {
+  color: var(--ink);
+  font-size: 0.86rem;
 }
 
 .media-row {

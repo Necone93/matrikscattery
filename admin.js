@@ -11,10 +11,12 @@ const animalList = document.querySelector("#animalList");
 const postList = document.querySelector("#postList");
 const translateAllButton = document.querySelector("#translateAllButton");
 const translateStatus = document.querySelector("#translateStatus");
-const addPostMediaButton = document.querySelector("#addPostMedia");
+const addPostTextBlockButton = document.querySelector("#addPostTextBlock");
+const addPostMediaBlockButton = document.querySelector("#addPostMediaBlock");
 const postMediaUpload = document.querySelector("#postMediaUpload");
-const postMediaList = document.querySelector("#postMediaList");
+const postBlockList = document.querySelector("#postBlockList");
 const postMediaStatus = document.querySelector("#postMediaStatus");
+let pendingMediaBlockIndex = null;
 
 function linesToArray(value) {
   return value
@@ -71,36 +73,85 @@ function mediaTag(src, alt) {
   return `<img src="${src || "img/logo.jpg"}" alt="${alt}" />`;
 }
 
-function postMediaPaths() {
-  return linesToArray(postForm.media.value || "");
+function postPreviewPath(post) {
+  const blockMedia = (post.blocks || []).flatMap((block) => (block.type === "media" ? block.items || [] : []));
+  return post.image || (post.media || [])[0] || blockMedia[0] || "";
 }
 
-function setPostMediaPaths(paths) {
-  postForm.media.value = paths.join("\n");
-  renderPostMediaList();
-}
-
-function renderPostMediaList() {
-  const paths = postMediaPaths();
-  if (!postMediaList) return;
-
-  postMediaList.innerHTML = paths.length
-    ? paths
-      .map(
-        (path, index) => `
-          <div class="media-row">
-            ${mediaTag(path, `Medij ${index + 1}`)}
-            <span>${path}</span>
-            <button class="button ghost" type="button" data-remove-post-media="${index}">Ukloni</button>
-          </div>
-        `,
-      )
-      .join("")
-    : `<p class="help-text">Nema dodatih slika ili video snimaka.</p>`;
-
-  if (addPostMediaButton) {
-    addPostMediaButton.textContent = paths.length ? "Dodaj još jednu sliku/video" : "Dodaj sliku/video";
+function safeJsonArray(value) {
+  try {
+    const parsed = JSON.parse(value || "[]");
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
   }
+}
+
+function normalizePostBlocks(blocks, text = "", media = []) {
+  const normalized = (blocks || [])
+    .map((block) => {
+      if (block.type === "media") {
+        return { type: "media", items: (block.items || []).filter(Boolean) };
+      }
+      return { type: "text", text: String(block.text || "") };
+    });
+
+  if (normalized.length) return normalized;
+
+  const fallback = [];
+  if (text.trim()) fallback.push({ type: "text", text });
+  if ((media || []).length) fallback.push({ type: "media", items: media });
+  return fallback.length ? fallback : [{ type: "text", text: "" }];
+}
+
+function postBlocksData() {
+  return normalizePostBlocks(safeJsonArray(postForm.blocks.value), postForm.text.value, linesToArray(postForm.media.value || ""));
+}
+
+function setPostBlocksData(blocks) {
+  const normalized = normalizePostBlocks(blocks);
+  postForm.blocks.value = JSON.stringify(normalized);
+  postForm.text.value = normalized.filter((block) => block.type === "text").map((block) => block.text).join("\n\n");
+  postForm.media.value = normalized.flatMap((block) => (block.type === "media" ? block.items : [])).join("\n");
+  renderPostBlocks();
+}
+
+function renderPostBlocks() {
+  if (!postBlockList) return;
+  const blocks = postBlocksData();
+
+  postBlockList.innerHTML = blocks
+    .map((block, index) => block.type === "media"
+      ? `
+        <div class="content-block" data-post-block="${index}">
+          <div class="content-block-head">
+            <strong>Slike/video</strong>
+            <div class="block-actions">
+              <button class="button ghost" type="button" data-upload-post-block="${index}">${block.items.length ? "Dodaj još jednu" : "Dodaj sliku/video"}</button>
+              <button class="button ghost" type="button" data-remove-post-block="${index}">Ukloni blok</button>
+            </div>
+          </div>
+          <div class="media-list">
+            ${block.items.length ? block.items.map((path, mediaIndex) => `
+              <div class="media-row">
+                ${mediaTag(path, `Medij ${mediaIndex + 1}`)}
+                <span>${path}</span>
+                <button class="button ghost" type="button" data-remove-block-media="${index}:${mediaIndex}">Ukloni</button>
+              </div>
+            `).join("") : `<p class="help-text">Nema dodatih slika ili video snimaka.</p>`}
+          </div>
+        </div>
+      `
+      : `
+        <div class="content-block" data-post-block="${index}">
+          <div class="content-block-head">
+            <strong>Tekst</strong>
+            <button class="button ghost" type="button" data-remove-post-block="${index}">Ukloni blok</button>
+          </div>
+          <textarea rows="6" data-post-text-block="${index}" placeholder="Unesite tekst ovog dela objave">${block.text || ""}</textarea>
+        </div>
+      `)
+    .join("");
 }
 
 function renderAnimals() {
@@ -131,7 +182,7 @@ function renderPosts() {
     .map(
       (post) => `
         <article class="admin-item">
-          ${mediaTag(post.image, post.title)}
+          ${mediaTag(postPreviewPath(post), post.title)}
           <div>
             <span class="status">${post.category || "Blog"}</span>
             <h3>${post.title}</h3>
@@ -156,7 +207,7 @@ function resetAnimalForm() {
 function resetPostForm() {
   postForm.reset();
   postForm.id.value = "";
-  setPostMediaPaths([]);
+  setPostBlocksData([{ type: "text", text: "" }]);
   document.querySelector("#postFormTitle").textContent = "Novi blog post";
 }
 
@@ -181,7 +232,8 @@ function fillPostForm(post) {
   postForm.image.value = post.image || "";
   postForm.media.value = (post.media || []).join("\n");
   postForm.text.value = post.text || "";
-  renderPostMediaList();
+  postForm.blocks.value = JSON.stringify(normalizePostBlocks(post.blocks, post.text || "", post.media || []));
+  renderPostBlocks();
   document.querySelector("#postFormTitle").textContent = `Izmena: ${post.title}`;
   postForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -217,10 +269,14 @@ async function uploadPostMedia(input) {
   const path = await uploadFile(input);
   if (!path) return;
 
-  const paths = postMediaPaths();
-  paths.push(path);
-  setPostMediaPaths(paths);
+  const blocks = postBlocksData();
+  const blockIndex = pendingMediaBlockIndex ?? blocks.findIndex((block) => block.type === "media");
+  const targetIndex = blockIndex >= 0 ? blockIndex : blocks.length;
+  if (!blocks[targetIndex]) blocks.push({ type: "media", items: [] });
+  blocks[targetIndex].items.push(path);
+  setPostBlocksData(blocks);
   if (!postForm.image.value) postForm.image.value = path;
+  pendingMediaBlockIndex = null;
   if (postMediaStatus) postMediaStatus.textContent = `Dodato: ${path}`;
 }
 
@@ -300,6 +356,7 @@ postForm.addEventListener("submit", async (event) => {
     image: postForm.image.value,
     media: linesToArray(postForm.media.value),
     text: postForm.text.value,
+    blocks: safeJsonArray(postForm.blocks.value),
   };
 
   const id = postForm.id.value;
@@ -316,7 +373,9 @@ document.addEventListener("click", async (event) => {
   const deleteAnimal = event.target.closest("[data-delete-animal]");
   const editPost = event.target.closest("[data-edit-post]");
   const deletePost = event.target.closest("[data-delete-post]");
-  const removePostMedia = event.target.closest("[data-remove-post-media]");
+  const removePostBlock = event.target.closest("[data-remove-post-block]");
+  const uploadPostBlock = event.target.closest("[data-upload-post-block]");
+  const removeBlockMedia = event.target.closest("[data-remove-block-media]");
 
   if (editAnimal) {
     const animals = [...content.cats, ...content.kittens];
@@ -337,13 +396,34 @@ document.addEventListener("click", async (event) => {
     renderPosts();
   }
 
-  if (removePostMedia) {
-    const index = Number(removePostMedia.dataset.removePostMedia);
-    const paths = postMediaPaths();
-    paths.splice(index, 1);
-    setPostMediaPaths(paths);
-    if (postMediaStatus) postMediaStatus.textContent = "Medij je uklonjen iz objave.";
+  if (removePostBlock) {
+    const blocks = postBlocksData();
+    blocks.splice(Number(removePostBlock.dataset.removePostBlock), 1);
+    setPostBlocksData(blocks.length ? blocks : [{ type: "text", text: "" }]);
+    if (postMediaStatus) postMediaStatus.textContent = "Blok je uklonjen.";
   }
+
+  if (uploadPostBlock) {
+    pendingMediaBlockIndex = Number(uploadPostBlock.dataset.uploadPostBlock);
+    postMediaUpload?.click();
+  }
+
+  if (removeBlockMedia) {
+    const [blockIndex, mediaIndex] = removeBlockMedia.dataset.removeBlockMedia.split(":").map(Number);
+    const blocks = postBlocksData();
+    blocks[blockIndex]?.items?.splice(mediaIndex, 1);
+    setPostBlocksData(blocks);
+    if (postMediaStatus) postMediaStatus.textContent = "Medij je uklonjen iz bloka.";
+  }
+});
+
+postBlockList?.addEventListener("input", (event) => {
+  const textBlock = event.target.closest("[data-post-text-block]");
+  if (!textBlock) return;
+  const blocks = postBlocksData();
+  blocks[Number(textBlock.dataset.postTextBlock)].text = textBlock.value;
+  postForm.blocks.value = JSON.stringify(blocks);
+  postForm.text.value = blocks.filter((block) => block.type === "text").map((block) => block.text).join("\n\n");
 });
 
 document.querySelector("#resetAnimal").addEventListener("click", resetAnimalForm);
@@ -351,11 +431,21 @@ document.querySelector("#resetPost").addEventListener("click", resetPostForm);
 document.querySelector("#animalUpload").addEventListener("change", (event) => {
   uploadFileToField(event.target, document.querySelector("#animalUploadResult"), "#animalForm [name='image']").catch((error) => alert(error.message));
 });
-addPostMediaButton?.addEventListener("click", () => postMediaUpload?.click());
+addPostTextBlockButton?.addEventListener("click", () => {
+  const blocks = postBlocksData();
+  blocks.push({ type: "text", text: "" });
+  setPostBlocksData(blocks);
+});
+addPostMediaBlockButton?.addEventListener("click", () => {
+  const blocks = postBlocksData();
+  blocks.push({ type: "media", items: [] });
+  setPostBlocksData(blocks);
+});
 postMediaUpload?.addEventListener("change", (event) => {
   uploadPostMedia(event.target).catch((error) => {
+    pendingMediaBlockIndex = null;
     if (postMediaStatus) postMediaStatus.textContent = error.message;
     alert(error.message);
   });
 });
-renderPostMediaList();
+setPostBlocksData([{ type: "text", text: "" }]);

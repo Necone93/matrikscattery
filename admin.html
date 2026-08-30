@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=post-backlink-size-1" />
-    <link rel="stylesheet" href="admin.css?v=post-backlink-size-1" />
+    <link rel="stylesheet" href="styles.css?v=blog-content-blocks-2" />
+    <link rel="stylesheet" href="admin.css?v=blog-content-blocks-2" />
   </head>
   <body class="admin-page">
     <header class="admin-header">
@@ -106,18 +106,20 @@
               <input name="image" placeholder="Automatski se popuni prvim dodatim medijem" />
             </label>
             <input type="hidden" name="media" />
-            <div class="media-manager">
+            <input type="hidden" name="text" />
+            <input type="hidden" name="blocks" />
+            <div class="block-manager">
               <div class="media-manager-head">
-                <span>Slike i video snimci</span>
-                <button class="button ghost" type="button" id="addPostMedia">Dodaj sliku/video</button>
+                <span>Sadržaj objave</span>
+                <div class="block-actions">
+                  <button class="button ghost" type="button" id="addPostTextBlock">Dodaj tekst</button>
+                  <button class="button ghost" type="button" id="addPostMediaBlock">Dodaj slike/video</button>
+                </div>
               </div>
               <input class="hidden" id="postMediaUpload" type="file" accept="image/*,video/*" />
-              <div class="media-list" id="postMediaList"></div>
-              <p class="help-text" id="postMediaStatus">Može ostati prazno ako objava ima samo tekst.</p>
+              <div class="post-block-list" id="postBlockList"></div>
+              <p class="help-text" id="postMediaStatus">Objava može imati samo tekst, samo media, ili redosled tekst - slike/video - tekst - slike/video.</p>
             </div>
-            <label>Tekst
-              <textarea name="text" rows="7"></textarea>
-            </label>
             <div class="form-actions">
               <button class="button primary" type="submit">Sačuvaj</button>
               <button class="button ghost" type="button" id="resetPost">Novo</button>
@@ -131,6 +133,6 @@
       </section>
     </main>
 
-    <script src="admin.js?v=post-backlink-size-1"></script>
+    <script src="admin.js?v=blog-content-blocks-2"></script>
   </body>
 </html>

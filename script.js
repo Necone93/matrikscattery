@@ -663,6 +663,12 @@ function localizeItem(item) {
 
   if (isPost) {
     localized.date = translated.date || translated.category || item.date;
+    if (translated.text && !translated.blocks && Array.isArray(item.blocks) && item.blocks.length) {
+      localized.blocks = [
+        { type: "text", text: translated.text },
+        ...item.blocks.filter((block) => block.type === "media"),
+      ];
+    }
   }
 
   return localized;
@@ -879,7 +885,8 @@ function isVideo(src) {
 }
 
 function postMediaSources(post) {
-  return [...new Set([post.image, ...(post.media || [])].filter(Boolean))];
+  const blockMedia = (post.blocks || []).flatMap((block) => (block.type === "media" ? block.items || [] : []));
+  return [...new Set([post.image, ...(post.media || []), ...blockMedia].filter(Boolean))];
 }
 
 function postPreviewMedia(post) {
@@ -892,6 +899,30 @@ function mediaMarkup(src, alt, options = {}) {
     return `<video src="${src}" ${options.controls ? "controls" : "muted playsinline preload=\"metadata\""}></video>`;
   }
   return `<img src="${src}" alt="${alt}" />`;
+}
+
+function postContentBlocks(post) {
+  const blocks = Array.isArray(post.blocks) ? post.blocks.filter((block) => {
+    if (block.type === "media") return (block.items || []).length;
+    return String(block.text || "").trim();
+  }) : [];
+
+  if (blocks.length) return blocks;
+
+  const fallback = [];
+  if (String(post.text || "").trim()) fallback.push({ type: "text", text: post.text });
+  const media = postMediaSources(post);
+  if (media.length) fallback.push({ type: "media", items: media });
+  return fallback;
+}
+
+function postTextMarkup(text) {
+  return String(text || "")
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+    .map((paragraph) => `<p>${paragraph.replaceAll("\n", "<br />")}</p>`)
+    .join("");
 }
 
 function renderBlog() {
@@ -1272,8 +1303,14 @@ function renderPostDetail() {
     return;
   }
 
-  const media = postMediaSources(post)
-    .map((src) => mediaMarkup(src, post.title, { controls: true }))
+  const blocks = postContentBlocks(post)
+    .map((block) => {
+      if (block.type === "media") {
+        const media = (block.items || []).map((src) => mediaMarkup(src, post.title, { controls: true })).join("");
+        return media ? `<div class="detail-gallery post-media-block">${media}</div>` : "";
+      }
+      return `<div class="post-text-block">${postTextMarkup(block.text)}</div>`;
+    })
     .join("");
 
   document.title = `${post.title} | Matriks Cattery`;
@@ -1282,8 +1319,7 @@ function renderPostDetail() {
       <a class="back-link" href="blog.html">${tr().common.backBlog}</a>
       <span class="meta">${post.date || post.category || tr().common.blogFallback}</span>
       <h1>${post.title}</h1>
-      <p>${post.text || ""}</p>
-      ${media ? `<div class="detail-gallery">${media}</div>` : ""}
+      ${blocks}
     </article>
   `;
 }

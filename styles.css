@@ -2096,6 +2096,19 @@ footer img {
   box-shadow: 0 18px 46px rgba(103, 91, 89, 0.12);
 }
 
+.post-text-block {
+  width: min(760px, 100%);
+}
+
+.post-text-block p + p {
+  margin-top: 1em;
+}
+
+.post-text-block + .post-media-block,
+.post-media-block + .post-text-block {
+  margin-top: 8px;
+}
+
 .info-page main,
 .contact-page main,
 .about-page main {
