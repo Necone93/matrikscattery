@@ -3849,3 +3849,112 @@ footer img {
     font-size: 0.7rem !important;
   }
 }
+
+/* Final mobile override for the breed page: keep the glass frame fixed, scroll its content. */
+@media (max-width: 920px) {
+  body.info-page.public-page {
+    height: 100svh !important;
+    min-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .info-page.frame-page main {
+    width: calc(100% - 16px) !important;
+    height: calc(100svh - 16px) !important;
+    min-height: 0 !important;
+    margin: 8px auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 64px minmax(0, 1fr) !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .info-page.frame-page .page-hero {
+    display: none !important;
+  }
+
+  .info-page.frame-page .breed {
+    position: relative !important;
+    inset: auto !important;
+    grid-row: 2 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    align-items: start !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 14px 14px 30px !important;
+    overflow: visible !important;
+  }
+
+  .info-page.frame-page .breed-image {
+    width: min(520px, 100%) !important;
+    justify-self: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .info-page.frame-page .breed-image img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: contain !important;
+  }
+
+  .info-page.frame-page .breed-copy {
+    min-height: 0 !important;
+  }
+}
+
+/* Final home mobile spacing pass: keep the image close to the CTA without page scroll. */
+@media (max-width: 620px) {
+  .home-page .hero-stage {
+    grid-template-rows: 58px minmax(0, auto) minmax(150px, 34svh) 44px !important;
+    row-gap: 4px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .home-page .hero-copy {
+    gap: 6px !important;
+    align-content: start !important;
+  }
+
+  .home-page .hero-actions {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .home-page .hero-cat {
+    align-self: start !important;
+    width: min(390px, 94vw) !important;
+    height: 100% !important;
+    max-height: 34svh !important;
+  }
+
+  .home-page .hero-cat img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: top center !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page .hero-stage {
+    grid-template-rows: 54px minmax(0, auto) minmax(130px, 30svh) 40px !important;
+    row-gap: 3px !important;
+  }
+
+  .home-page .hero-cat {
+    width: min(330px, 92vw) !important;
+    max-height: 30svh !important;
+  }
+}
