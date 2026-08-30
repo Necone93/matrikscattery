@@ -11,6 +11,10 @@ const animalList = document.querySelector("#animalList");
 const postList = document.querySelector("#postList");
 const translateAllButton = document.querySelector("#translateAllButton");
 const translateStatus = document.querySelector("#translateStatus");
+const addPostMediaButton = document.querySelector("#addPostMedia");
+const postMediaUpload = document.querySelector("#postMediaUpload");
+const postMediaList = document.querySelector("#postMediaList");
+const postMediaStatus = document.querySelector("#postMediaStatus");
 
 function linesToArray(value) {
   return value
@@ -67,6 +71,38 @@ function mediaTag(src, alt) {
   return `<img src="${src || "img/logo.jpg"}" alt="${alt}" />`;
 }
 
+function postMediaPaths() {
+  return linesToArray(postForm.media.value || "");
+}
+
+function setPostMediaPaths(paths) {
+  postForm.media.value = paths.join("\n");
+  renderPostMediaList();
+}
+
+function renderPostMediaList() {
+  const paths = postMediaPaths();
+  if (!postMediaList) return;
+
+  postMediaList.innerHTML = paths.length
+    ? paths
+      .map(
+        (path, index) => `
+          <div class="media-row">
+            ${mediaTag(path, `Medij ${index + 1}`)}
+            <span>${path}</span>
+            <button class="button ghost" type="button" data-remove-post-media="${index}">Ukloni</button>
+          </div>
+        `,
+      )
+      .join("")
+    : `<p class="help-text">Nema dodatih slika ili video snimaka.</p>`;
+
+  if (addPostMediaButton) {
+    addPostMediaButton.textContent = paths.length ? "Dodaj još jednu sliku/video" : "Dodaj sliku/video";
+  }
+}
+
 function renderAnimals() {
   const animals = [...content.cats, ...content.kittens];
 
@@ -120,6 +156,7 @@ function resetAnimalForm() {
 function resetPostForm() {
   postForm.reset();
   postForm.id.value = "";
+  setPostMediaPaths([]);
   document.querySelector("#postFormTitle").textContent = "Novi blog post";
 }
 
@@ -144,11 +181,12 @@ function fillPostForm(post) {
   postForm.image.value = post.image || "";
   postForm.media.value = (post.media || []).join("\n");
   postForm.text.value = post.text || "";
+  renderPostMediaList();
   document.querySelector("#postFormTitle").textContent = `Izmena: ${post.title}`;
   postForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-async function uploadFile(input, result, targetSelector) {
+async function uploadFile(input) {
   if (!input.files.length) return;
 
   const formData = new FormData();
@@ -162,9 +200,28 @@ async function uploadFile(input, result, targetSelector) {
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || "Upload nije uspeo.");
 
-  document.querySelector(targetSelector).value = data.path;
-  result.textContent = `Sačuvano: ${data.path}`;
   input.value = "";
+  return data.path;
+}
+
+async function uploadFileToField(input, result, targetSelector) {
+  const path = await uploadFile(input);
+  if (!path) return;
+
+  document.querySelector(targetSelector).value = path;
+  result.textContent = `Sačuvano: ${path}`;
+}
+
+async function uploadPostMedia(input) {
+  if (postMediaStatus) postMediaStatus.textContent = "Upload je u toku...";
+  const path = await uploadFile(input);
+  if (!path) return;
+
+  const paths = postMediaPaths();
+  paths.push(path);
+  setPostMediaPaths(paths);
+  if (!postForm.image.value) postForm.image.value = path;
+  if (postMediaStatus) postMediaStatus.textContent = `Dodato: ${path}`;
 }
 
 loginButton.addEventListener("click", async () => {
@@ -259,6 +316,7 @@ document.addEventListener("click", async (event) => {
   const deleteAnimal = event.target.closest("[data-delete-animal]");
   const editPost = event.target.closest("[data-edit-post]");
   const deletePost = event.target.closest("[data-delete-post]");
+  const removePostMedia = event.target.closest("[data-remove-post-media]");
 
   if (editAnimal) {
     const animals = [...content.cats, ...content.kittens];
@@ -278,13 +336,26 @@ document.addEventListener("click", async (event) => {
     content = await api(`/api/posts/${deletePost.dataset.deletePost}`, { method: "DELETE" });
     renderPosts();
   }
+
+  if (removePostMedia) {
+    const index = Number(removePostMedia.dataset.removePostMedia);
+    const paths = postMediaPaths();
+    paths.splice(index, 1);
+    setPostMediaPaths(paths);
+    if (postMediaStatus) postMediaStatus.textContent = "Medij je uklonjen iz objave.";
+  }
 });
 
 document.querySelector("#resetAnimal").addEventListener("click", resetAnimalForm);
 document.querySelector("#resetPost").addEventListener("click", resetPostForm);
 document.querySelector("#animalUpload").addEventListener("change", (event) => {
-  uploadFile(event.target, document.querySelector("#animalUploadResult"), "#animalForm [name='image']").catch((error) => alert(error.message));
+  uploadFileToField(event.target, document.querySelector("#animalUploadResult"), "#animalForm [name='image']").catch((error) => alert(error.message));
 });
-document.querySelector("#postUpload").addEventListener("change", (event) => {
-  uploadFile(event.target, document.querySelector("#postUploadResult"), "#postForm [name='image']").catch((error) => alert(error.message));
+addPostMediaButton?.addEventListener("click", () => postMediaUpload?.click());
+postMediaUpload?.addEventListener("change", (event) => {
+  uploadPostMedia(event.target).catch((error) => {
+    if (postMediaStatus) postMediaStatus.textContent = error.message;
+    alert(error.message);
+  });
 });
+renderPostMediaList();

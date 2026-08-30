@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=gallery-controls-5" />
-    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="styles.css?v=post-backlink-size-1" />
+    <link rel="stylesheet" href="admin.css?v=post-backlink-size-1" />
   </head>
   <body class="admin-page">
     <header class="admin-header">
@@ -102,12 +102,19 @@
             <label>Kategorija
               <input name="category" placeholder="Izložbe, Novosti, Dnevnik..." />
             </label>
-            <label>Glavna slika
-              <input name="image" placeholder="img/slika.jpg ili uploads/slika.jpg" />
+            <label>Naslovna slika/video za karticu (opciono)
+              <input name="image" placeholder="Automatski se popuni prvim dodatim medijem" />
             </label>
-            <label>Dodatni mediji
-              <textarea name="media" rows="4" placeholder="Jedna putanja po redu"></textarea>
-            </label>
+            <input type="hidden" name="media" />
+            <div class="media-manager">
+              <div class="media-manager-head">
+                <span>Slike i video snimci</span>
+                <button class="button ghost" type="button" id="addPostMedia">Dodaj sliku/video</button>
+              </div>
+              <input class="hidden" id="postMediaUpload" type="file" accept="image/*,video/*" />
+              <div class="media-list" id="postMediaList"></div>
+              <p class="help-text" id="postMediaStatus">Može ostati prazno ako objava ima samo tekst.</p>
+            </div>
             <label>Tekst
               <textarea name="text" rows="7"></textarea>
             </label>
@@ -118,18 +125,12 @@
           </form>
 
           <div>
-            <div class="upload-box">
-              <label>Upload slike/video
-                <input id="postUpload" type="file" accept="image/*,video/*" />
-              </label>
-              <p id="postUploadResult"></p>
-            </div>
             <div class="admin-list" id="postList"></div>
           </div>
         </section>
       </section>
     </main>
 
-    <script src="admin.js"></script>
+    <script src="admin.js?v=post-backlink-size-1"></script>
   </body>
 </html>

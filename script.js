@@ -66,36 +66,118 @@ let cats = [
 
 let kittens = [
   {
+    id: 4,
     name: "Leglo A",
-    label: "Mačići",
-    status: "Uskoro dostupno",
-    image: "img/717005919_1008238481591700_406617061756352692_n.jpg",
+    label: "Jul 2025",
+    status: "Naše prvo leglo",
+    image: "img/Macici/Leglo A/20250721_144223_resized.jpg",
     gallery: [
-      "img/717005919_1008238481591700_406617061756352692_n.jpg",
-      "img/756523962_1055086823949840_7801777179541880694_n.jpg",
-      "img/775995434_2085933572016337_7493598912630596714_n.jpg",
+      "img/Macici/Leglo A/20250721_144223_resized.jpg",
+      "img/Macici/Leglo A/20250803_203946_resized.jpg",
+      "img/Macici/Leglo A/20250806_185608_resized.jpg",
+      "img/Macici/Leglo A/20250806_190318_resized.jpg",
+      "img/Macici/Leglo A/20250810_233843_resized.jpg",
+      "img/Macici/Leglo A/20250827_233544_resized.jpg",
+      "img/Macici/Leglo A/20250831_093024_resized_1.jpg",
+      "img/Macici/Leglo A/20250901_104322_resized_1.jpg",
+      "img/Macici/Leglo A/20250902_223759_resized.jpg",
+      "img/Macici/Leglo A/20250902_223822_resized_1.jpg",
+      "img/Macici/Leglo A/IMG-005fb9ed39fc5f2e70bb961f850fcdfb-V.jpg",
+      "img/Macici/Leglo A/IMG-20260501-WA0008.jpg",
+      "img/Macici/Leglo A/IMG-20260501-WA0009.jpg",
+      "img/Macici/Leglo A/IMG-20260725-WA0000.jpg",
+      "img/Macici/Leglo A/IMG-22ca16d66664e9033f9d2080f9aff9db-V.jpg",
+      "img/Macici/Leglo A/IMG-57a4e5286055b2a184df4571923231ad-V.jpg",
     ],
-    text: "Prvo aktuelno leglo biće predstavljeno sa datumom rođenja, roditeljima, statusom rezervacija, karakterom svakog mačeta i novim fotografijama kako mačići rastu.",
+    text: "Alkaraz i Atos jul 2025 🐾\n\nNaše prvo leglo 💛\n\nOd naše voljene Barby i prelepog Flokija nastala je posebna priča - naše prvo leglo. Mališani Alkaraz i Atos zauvek će imati posebno mesto u srcu Matriks Cattery, jer su upravo oni bili početak našeg uzgajivačkog puta. Od Barby je sve počelo... a sa njima je san postao stvarnost. ✨",
     facts: {
-      Rođenje: "Biće objavljeno",
-      Status: "Praćenje razvoja",
-      Rezervacije: "Na upit",
+      Mačići: "Alkaraz i Atos",
+      Godina: "2025",
+      Roditelji: "Barby i Floki",
+    },
+    translations: {
+      en: {
+        label: "July 2025",
+        status: "Our first litter",
+        text: "Alcatraz and Atos, July 2025 🐾\n\nOur first litter 💛\n\nFrom our beloved Barby and beautiful Floki came a special story - our first litter. Little Alcatraz and Atos will always have a special place in the heart of Matriks Cattery, because they marked the beginning of our breeding journey. Everything began with Barby... and with them, the dream became reality. ✨",
+        facts: { Kittens: "Alcatraz and Atos", Year: "2025", Parents: "Barby and Floki" },
+      },
+      ru: {
+        label: "Июль 2025",
+        status: "Наш первый помет",
+        text: "Alcatraz и Atos, июль 2025 🐾\n\nНаш первый помет 💛\n\nОт нашей любимой Barby и прекрасного Floki началась особенная история - наш первый помет. Малыши Alcatraz и Atos навсегда займут особое место в сердце Matriks Cattery, потому что именно они стали началом нашего пути в разведении. Все началось с Barby... а с ними мечта стала реальностью. ✨",
+        facts: { Котята: "Alcatraz и Atos", Год: "2025", Родители: "Barby и Floki" },
+      },
+      de: {
+        label: "Juli 2025",
+        status: "Unser erster Wurf",
+        text: "Alcatraz und Atos, Juli 2025 🐾\n\nUnser erster Wurf 💛\n\nAus unserer geliebten Barby und dem wunderschönen Floki entstand eine besondere Geschichte - unser erster Wurf. Die Kleinen Alcatraz und Atos werden für immer einen besonderen Platz im Herzen von Matriks Cattery haben, denn sie waren der Anfang unseres Zuchtweges. Mit Barby begann alles... und mit ihnen wurde der Traum Wirklichkeit. ✨",
+        facts: { Kitten: "Alcatraz und Atos", Jahr: "2025", Eltern: "Barby und Floki" },
+      },
+      it: {
+        label: "Luglio 2025",
+        status: "La nostra prima cucciolata",
+        text: "Alcatraz e Atos, luglio 2025 🐾\n\nLa nostra prima cucciolata 💛\n\nDalla nostra amata Barby e dal bellissimo Floki è nata una storia speciale - la nostra prima cucciolata. I piccoli Alcatraz e Atos avranno per sempre un posto speciale nel cuore di Matriks Cattery, perché sono stati l'inizio del nostro percorso di allevamento. Tutto è iniziato da Barby... e con loro il sogno è diventato realtà. ✨",
+        facts: { Gattini: "Alcatraz e Atos", Anno: "2025", Genitori: "Barby e Floki" },
+      },
     },
   },
   {
-    name: "Planirano leglo",
-    label: "Najava",
-    status: "Planirano",
-    image: "img/775995434_2085933572016337_7493598912630596714_n.jpg",
+    id: 7,
+    name: "Leglo B",
+    label: "Björn i Boo",
+    status: "Naše drugo leglo",
+    image: "img/Macici/Leglo B/mace_oglas_resize.jpg",
     gallery: [
-      "img/775995434_2085933572016337_7493598912630596714_n.jpg",
-      "img/739040313_2035024693816032_1814703656727180949_n.jpg",
+      "img/Macici/Leglo B/mace_oglas_resize.jpg",
+      "img/Macici/Leglo B/20260507_224203_resized.jpg",
+      "img/Macici/Leglo B/20260507_224216_resized.jpg",
+      "img/Macici/Leglo B/20260509_232516_resized.jpg",
+      "img/Macici/Leglo B/20260512_190309_resized.jpg",
+      "img/Macici/Leglo B/20260512_190747_resized.jpg",
+      "img/Macici/Leglo B/20260512_190828_resized.jpg",
+      "img/Macici/Leglo B/20260512_190938_resized.jpg",
+      "img/Macici/Leglo B/20260513_213902_resized.jpg",
+      "img/Macici/Leglo B/20260516_091509_resized.jpg",
+      "img/Macici/Leglo B/20260522_225426_resized.jpg",
+      "img/Macici/Leglo B/20260522_225650_resized.jpg",
+      "img/Macici/Leglo B/20260524_200629_resized.jpg",
+      "img/Macici/Leglo B/20260529_175041_resized.jpg",
+      "img/Macici/Leglo B/20260529_175218_resized.jpg",
+      "img/Macici/Leglo B/20260605_182011_resized.jpg",
+      "img/Macici/Leglo B/20260606_123139_resized.jpg",
     ],
-    text: "Planirana legla objavljujemo nakon potvrde parenja. Zainteresovani budući vlasnici mogu se javiti ranije kako bi dobili informacije o roditeljima i očekivanom terminu.",
+    text: "Naše drugo leglo 🐾\n\nDrugo leglo Matriks Cattery donelo nam je još jednu malu, predivnu priču - Björn i Boo. Dva mala dečaka, svaki poseban na svoj način, koji su svojim nežnim karakterom i neodoljivom lepotom zauvek ostavili trag u našem srcu. Još jedno leglo, još dve male duše i još više ljubavi u našoj Matriks priči. 💛✨",
     facts: {
-      Roditelji: "Biće potvrđeni",
-      Status: "Lista interesovanja",
-      Kontakt: "Poruka odgajivaču",
+      Mačići: "Björn i Boo",
+      Godina: "2026",
+      Roditelji: "Biće dopisano",
+    },
+    translations: {
+      en: {
+        label: "Björn and Boo",
+        status: "Our second litter",
+        text: "Our second litter 🐾\n\nThe second litter of Matriks Cattery brought us another small, beautiful story - Björn and Boo. Two little boys, each special in his own way, who with their gentle character and irresistible beauty left a lasting mark in our hearts. Another litter, two more little souls and even more love in our Matriks story. 💛✨",
+        facts: { Kittens: "Björn and Boo", Year: "2026", Parents: "To be added" },
+      },
+      ru: {
+        label: "Björn и Boo",
+        status: "Наш второй помет",
+        text: "Наш второй помет 🐾\n\nВторой помет Matriks Cattery подарил нам еще одну маленькую, прекрасную историю - Björn и Boo. Два маленьких мальчика, каждый особенный по-своему, своим нежным характером и неотразимой красотой навсегда оставили след в наших сердцах. Еще один помет, еще две маленькие души и еще больше любви в нашей истории Matriks. 💛✨",
+        facts: { Котята: "Björn и Boo", Год: "2026", Родители: "Будет добавлено" },
+      },
+      de: {
+        label: "Björn und Boo",
+        status: "Unser zweiter Wurf",
+        text: "Unser zweiter Wurf 🐾\n\nDer zweite Wurf von Matriks Cattery brachte uns eine weitere kleine, wunderschöne Geschichte - Björn und Boo. Zwei kleine Jungen, jeder auf seine eigene Weise besonders, die mit ihrem sanften Wesen und ihrer unwiderstehlichen Schönheit für immer Spuren in unseren Herzen hinterlassen haben. Noch ein Wurf, zwei weitere kleine Seelen und noch mehr Liebe in unserer Matriks Geschichte. 💛✨",
+        facts: { Kitten: "Björn und Boo", Jahr: "2026", Eltern: "Wird ergänzt" },
+      },
+      it: {
+        label: "Björn e Boo",
+        status: "La nostra seconda cucciolata",
+        text: "La nostra seconda cucciolata 🐾\n\nLa seconda cucciolata di Matriks Cattery ci ha portato un'altra piccola, meravigliosa storia - Björn e Boo. Due piccoli maschietti, ognuno speciale a modo suo, che con il loro carattere dolce e la loro bellezza irresistibile hanno lasciato per sempre un segno nel nostro cuore. Un'altra cucciolata, altre due piccole anime e ancora più amore nella nostra storia Matriks. 💛✨",
+        facts: { Gattini: "Björn e Boo", Anno: "2026", Genitori: "Da aggiungere" },
+      },
     },
   },
 ];
@@ -657,14 +739,21 @@ function renderCards(items, targetId, options = {}) {
 
   target.innerHTML = visibleItems
     .map(
-      (item, index) => `
+      (item, index) => {
+        const cardFacts = Object.entries(item.facts || {})
+          .map(([label, value]) => `${label}: ${value}`)
+          .join(" · ");
+
+        return `
         <button class="animal-card" type="button" data-target="${targetId}" data-index="${index}" data-id="${item.id || index}" data-page="${detailPage || ""}" data-number="${String(index + 1).padStart(2, "0")}">
           <img src="${item.image}" alt="${item.name}" />
           <span class="card-body">
             <h3>${item.name}</h3>
+            ${cardFacts ? `<span class="card-meta">${cardFacts}</span>` : ""}
           </span>
         </button>
-      `,
+      `;
+      },
     )
     .join("");
 }
@@ -785,6 +874,26 @@ function applyStaticPageTranslations() {
   }
 }
 
+function isVideo(src) {
+  return /\.(mp4|mov|webm)$/i.test(src || "");
+}
+
+function postMediaSources(post) {
+  return [...new Set([post.image, ...(post.media || [])].filter(Boolean))];
+}
+
+function postPreviewMedia(post) {
+  return postMediaSources(post)[0] || "";
+}
+
+function mediaMarkup(src, alt, options = {}) {
+  if (!src) return "";
+  if (isVideo(src)) {
+    return `<video src="${src}" ${options.controls ? "controls" : "muted playsinline preload=\"metadata\""}></video>`;
+  }
+  return `<img src="${src}" alt="${alt}" />`;
+}
+
 function renderBlog() {
   const target = document.querySelector("#blogList");
   if (!target) return;
@@ -792,16 +901,19 @@ function renderBlog() {
   target.innerHTML = sortedPosts()
     .map(localizeItem)
     .map(
-      (post) => `
-        <article class="blog-item">
-          <img src="${post.image}" alt="${post.title}" />
+      (post) => {
+        const preview = postPreviewMedia(post);
+        return `
+        <article class="blog-item ${preview ? "" : "is-text-only"}">
+          ${mediaMarkup(preview, post.title)}
           <div class="blog-copy">
             <span class="meta">${post.date || post.category || tr().common.blogFallback}</span>
             <h3>${post.title}</h3>
             <a class="text-link" href="post.html?id=${post.id}">${tr().common.readMore}</a>
           </div>
         </article>
-      `,
+      `;
+      },
     )
     .join("");
 }
@@ -814,16 +926,19 @@ function renderHomeBlog() {
     .slice(0, 2)
     .map(localizeItem)
     .map(
-      (post) => `
-        <article class="blog-item">
-          <img src="${post.image}" alt="${post.title}" />
+      (post) => {
+        const preview = postPreviewMedia(post);
+        return `
+        <article class="blog-item ${preview ? "" : "is-text-only"}">
+          ${mediaMarkup(preview, post.title)}
           <div class="blog-copy">
             <span class="meta">${post.date || post.category || tr().common.blogFallback}</span>
             <h3>${post.title}</h3>
             <a class="text-link" href="post.html?id=${post.id}">${tr().common.readMore}</a>
           </div>
         </article>
-      `,
+      `;
+      },
     )
     .join("");
 }
@@ -944,7 +1059,8 @@ function renderAnimalDetail() {
   const type = target.dataset.detailType;
   const id = Number(new URLSearchParams(window.location.search).get("id"));
   const source = type === "kitten" ? kittens : cats;
-  const item = localizeItem(source.find((animal) => Number(animal.id) === id) || source[0]);
+  const indexFallback = Number.isInteger(id) && id >= 0 && id < source.length ? source[id] : null;
+  const item = localizeItem(source.find((animal) => Number(animal.id) === id) || indexFallback || source[0]);
 
   if (!item) {
     target.innerHTML = `<section class="page-hero"><h1>Unos nije pronađen</h1><p>Vratite se na listu.</p></section>`;
@@ -1156,9 +1272,8 @@ function renderPostDetail() {
     return;
   }
 
-  const media = [post.image, ...(post.media || [])]
-    .filter(Boolean)
-    .map((src) => (/\.(mp4|mov|webm)$/i.test(src) ? `<video src="${src}" controls></video>` : `<img src="${src}" alt="${post.title}" />`))
+  const media = postMediaSources(post)
+    .map((src) => mediaMarkup(src, post.title, { controls: true }))
     .join("");
 
   document.title = `${post.title} | Matriks Cattery`;
@@ -1168,7 +1283,7 @@ function renderPostDetail() {
       <span class="meta">${post.date || post.category || tr().common.blogFallback}</span>
       <h1>${post.title}</h1>
       <p>${post.text || ""}</p>
-      <div class="detail-gallery">${media}</div>
+      ${media ? `<div class="detail-gallery">${media}</div>` : ""}
     </article>
   `;
 }
