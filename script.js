@@ -1046,20 +1046,36 @@ function moveDetailSlider(button) {
 }
 
 function moveSliderTrack(track, direction = 1) {
-  const nextLeft = track.scrollLeft + direction * track.clientWidth;
-  const maxLeft = track.scrollWidth - track.clientWidth - 4;
+  const slideCount = track.children.length;
+  if (slideCount < 2) return;
 
-  track.scrollTo({
-    left: direction > 0 && nextLeft > maxLeft ? 0 : Math.max(0, nextLeft),
-    behavior: "smooth",
+  const now = Date.now();
+  if (now < Number(track.dataset.clickLockUntil || 0)) return;
+  track.dataset.clickLockUntil = String(now + 650);
+
+  const currentIndex = Number(track.dataset.currentSlide || 0);
+  const nextIndex = direction > 0
+    ? (currentIndex + 1) % slideCount
+    : (currentIndex - 1 + slideCount) % slideCount;
+
+  setActiveSliderImage(track, nextIndex);
+}
+
+function setActiveSliderImage(track, index) {
+  const slideCount = track.children.length;
+  const activeIndex = ((index % slideCount) + slideCount) % slideCount;
+  track.classList.add("has-active");
+  track.dataset.currentSlide = String(activeIndex);
+  Array.from(track.children).forEach((slide, slideIndex) => {
+    slide.classList.toggle("is-active", slideIndex === activeIndex);
   });
 }
 
 function initDetailSliders() {
   document.querySelectorAll(".detail-slider-track").forEach((track) => {
-    if (track.dataset.sliderReady === "true" || track.children.length < 2) return;
+    if (track.dataset.sliderReady === "true") return;
     track.dataset.sliderReady = "true";
-    window.setInterval(() => moveSliderTrack(track, 1), 4500);
+    setActiveSliderImage(track, 0);
   });
 }
 
