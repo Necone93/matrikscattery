@@ -3958,3 +3958,52 @@ footer img {
     max-height: 30svh !important;
   }
 }
+
+/* Larger home images on phones, with the image pulled directly under the CTA. */
+@media (max-width: 620px) {
+  .home-page .hero-stage {
+    grid-template-rows: 56px minmax(0, auto) minmax(190px, 42svh) 40px !important;
+    row-gap: 0 !important;
+    padding-inline: 12px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .home-page .hero-copy {
+    gap: 5px !important;
+    padding-top: 3px !important;
+  }
+
+  .home-page #heroText {
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-page .hero-actions {
+    margin: 0 !important;
+  }
+
+  .home-page .hero-actions .button {
+    min-height: 32px !important;
+    padding-block: 7px !important;
+  }
+
+  .home-page .hero-cat {
+    width: min(470px, 98vw) !important;
+    max-height: 42svh !important;
+    margin-top: -2px !important;
+  }
+
+  .home-page .hero-cat img {
+    object-position: top center !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page .hero-stage {
+    grid-template-rows: 52px minmax(0, auto) minmax(165px, 38svh) 38px !important;
+  }
+
+  .home-page .hero-cat {
+    width: min(390px, 98vw) !important;
+    max-height: 38svh !important;
+  }
+}
