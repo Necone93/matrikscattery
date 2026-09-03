@@ -4606,7 +4606,7 @@ body.info-page.public-page {
   }
 }
 
-/* Final breed-page contract: body is fixed, the glass frame is the only vertical scroller. */
+/* Final breed-page contract: body and frame are fixed, content scrolls inside the frame. */
 body.breed-page.public-page {
   height: 100svh !important;
   min-height: 100svh !important;
@@ -4619,17 +4619,13 @@ body.breed-page.frame-page main {
   min-height: 0 !important;
   display: grid !important;
   grid-template-columns: 1fr !important;
-  grid-template-rows: 74px auto !important;
+  grid-template-rows: 74px minmax(0, 1fr) !important;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+  overflow-y: hidden !important;
   overscroll-behavior: contain !important;
-  touch-action: pan-y !important;
 }
 
 body.breed-page.frame-page .frame-topline {
-  position: sticky !important;
-  top: 0 !important;
   z-index: 8 !important;
 }
 
@@ -4643,10 +4639,14 @@ body.breed-page.frame-page .breed {
   grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1fr) !important;
   gap: clamp(28px, 5vw, 76px) !important;
   align-items: center !important;
-  height: auto !important;
-  max-height: none !important;
+  height: 100% !important;
+  max-height: 100% !important;
   min-height: 0 !important;
-  overflow: visible !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }
 
 body.breed-page.frame-page .breed-image,
@@ -4665,13 +4665,17 @@ body.breed-page.frame-page .breed-image img {
   body.breed-page.frame-page main {
     height: calc(100svh - 16px) !important;
     max-height: calc(100svh - 16px) !important;
-    grid-template-rows: 64px auto !important;
+    grid-template-rows: 64px minmax(0, 1fr) !important;
   }
 
   body.breed-page.frame-page .breed {
     grid-template-columns: 1fr !important;
     align-items: start !important;
+    height: 100% !important;
+    max-height: 100% !important;
     padding: 16px 14px 34px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   }
 
   body.breed-page.frame-page .breed-image {
@@ -4688,7 +4692,7 @@ body.breed-page.frame-page .breed-image img {
   body.breed-page.frame-page main {
     height: calc(100svh - 12px) !important;
     max-height: calc(100svh - 12px) !important;
-    grid-template-rows: 62px auto !important;
+    grid-template-rows: 62px minmax(0, 1fr) !important;
   }
 
   body.breed-page.frame-page .breed {
@@ -4698,5 +4702,20 @@ body.breed-page.frame-page .breed-image img {
 
   body.breed-page.frame-page .breed-image img {
     max-height: min(42svh, 360px) !important;
+  }
+}
+
+/* Keep the opened mobile menu above the home ticker. */
+@media (max-width: 920px) {
+  .home-page .hero-topline.is-menu-open {
+    z-index: 60 !important;
+  }
+
+  .home-page .hero-topline.is-menu-open .hero-mini-nav {
+    z-index: 61 !important;
+  }
+
+  .home-page .news-ticker {
+    z-index: 5 !important;
   }
 }
