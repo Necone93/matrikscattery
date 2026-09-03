@@ -4192,19 +4192,22 @@ footer img {
   }
 }
 
-/* Breed page scroll fix: this page needs normal scrollY; the home page remains fixed. */
+/* Breed page scroll fix: keep the page fixed and scroll only the glass frame. */
 body.info-page.public-page {
-  height: auto !important;
+  height: 100svh !important;
   min-height: 100svh !important;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-y: hidden !important;
 }
 
 .info-page.frame-page main {
-  height: auto !important;
-  min-height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  min-height: 0 !important;
   grid-template-rows: 74px auto !important;
-  overflow: visible !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
 }
 
 .info-page.frame-page .breed {
@@ -4216,19 +4219,18 @@ body.info-page.public-page {
 
 @media (max-width: 920px) {
   .info-page.frame-page main {
-    min-height: calc(100svh - 16px) !important;
+    height: calc(100svh - 16px) !important;
+    min-height: 0 !important;
     grid-template-rows: 64px auto !important;
-    overflow: visible !important;
-  }
-
-  .info-page.frame-page .breed {
-    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   }
 }
 
 @media (max-width: 620px) {
   .info-page.frame-page main {
-    min-height: calc(100svh - 12px) !important;
+    height: calc(100svh - 12px) !important;
+    min-height: 0 !important;
     grid-template-rows: 62px auto !important;
   }
 
@@ -4242,5 +4244,206 @@ body.info-page.public-page {
 
   .info-page.frame-page .breed-image img {
     max-height: min(48svh, 420px) !important;
+  }
+}
+
+.news-ticker {
+  grid-area: ticker;
+  position: relative;
+  z-index: 5;
+  width: calc(100% + (clamp(54px, 6vw, 98px) * 2));
+  margin-inline: calc(clamp(54px, 6vw, 98px) * -1);
+  height: 44px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.66);
+  border-bottom: 1px solid rgba(39, 50, 58, 0.08);
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 253, 249, 0.84), rgba(239, 196, 200, 0.38), rgba(152, 203, 213, 0.28)),
+    rgba(255, 253, 249, 0.8);
+  box-shadow: 0 14px 32px rgba(103, 91, 89, 0.12);
+  backdrop-filter: blur(18px) saturate(1.14);
+}
+
+.news-ticker.hidden {
+  display: none;
+}
+
+.news-ticker-track {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  height: 100%;
+  animation: news-ticker-scroll 18s linear infinite;
+}
+
+.news-ticker:hover .news-ticker-track,
+.news-ticker:focus-within .news-ticker-track {
+  animation-play-state: paused;
+}
+
+.news-ticker-group {
+  display: flex;
+  align-items: center;
+  gap: clamp(26px, 5vw, 70px);
+  min-width: max-content;
+  padding-left: 100%;
+  padding-right: clamp(26px, 5vw, 70px);
+}
+
+.news-ticker a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  white-space: nowrap;
+  font-size: clamp(0.82rem, 1vw, 0.98rem);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.news-ticker-brand {
+  font: inherit;
+  color: #7f6b71;
+}
+
+.news-ticker-paw {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.home-page.has-news .hero-stage {
+  grid-template-rows: 74px 44px minmax(0, 1fr) !important;
+  grid-template-areas:
+    "top top"
+    "ticker ticker"
+    "copy image" !important;
+}
+
+@keyframes news-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (max-width: 620px) {
+  .news-ticker {
+    width: calc(100% + 20px);
+    margin-inline: -10px;
+    height: 38px;
+  }
+
+  .news-ticker-item {
+    min-height: 38px;
+    font-size: 0.78rem;
+  }
+
+  .news-ticker-paw {
+    width: 18px;
+    height: 18px;
+  }
+
+  .home-page.has-news .hero-stage {
+    height: calc(100svh - 12px) !important;
+    grid-template-rows: 54px 38px minmax(0, auto) minmax(180px, 42svh) 36px !important;
+    grid-template-areas:
+      "top"
+      "ticker"
+      "copy"
+      "image"
+      "social" !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* Home ticker placement: attach it to the navigation and move content down without shrinking it. */
+.home-page.has-news .hero-stage {
+  row-gap: 0 !important;
+}
+
+.home-page.has-news .hero-copy {
+  padding-top: clamp(22px, 3vw, 42px) !important;
+}
+
+@media (max-width: 620px) {
+  .home-page.has-news .hero-stage {
+    grid-template-rows: 54px 38px minmax(0, auto) minmax(210px, 45svh) 34px !important;
+    row-gap: 0 !important;
+  }
+
+  .home-page.has-news .hero-copy {
+    gap: 6px !important;
+    padding-top: 18px !important;
+    align-self: start !important;
+  }
+
+  .home-page.has-news .hero-copy .kicker {
+    font-size: 0.72rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .home-page.has-news .hero-copy h1 {
+    font-size: clamp(2.18rem, 11.2vw, 3.08rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .home-page.has-news .hero-copy p:not(.kicker) {
+    font-size: 1rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .home-page.has-news #heroText {
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-page.has-news .hero-actions {
+    margin-top: 2px !important;
+  }
+
+  .home-page.has-news .hero-actions .button {
+    min-height: 34px !important;
+    padding: 8px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .home-page.has-news .hero-cat {
+    align-self: end !important;
+    width: min(560px, 100vw) !important;
+    max-height: 45svh !important;
+    margin-top: 0 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page.has-news .hero-stage {
+    grid-template-rows: 52px 38px minmax(0, auto) minmax(185px, 42svh) 32px !important;
+  }
+
+  .home-page.has-news .hero-copy {
+    padding-top: 14px !important;
+  }
+
+  .home-page.has-news .hero-copy h1 {
+    font-size: clamp(2rem, 10.6vw, 2.7rem) !important;
+  }
+
+  .home-page.has-news .hero-copy p:not(.kicker) {
+    font-size: 0.92rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .home-page.has-news .hero-cat {
+    max-height: 42svh !important;
   }
 }

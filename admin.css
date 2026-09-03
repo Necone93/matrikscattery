@@ -246,6 +246,22 @@ textarea {
   background: var(--taupe);
 }
 
+.news-admin-marker {
+  display: grid;
+  place-items: center;
+  min-height: 110px;
+  border-radius: 8px;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(255, 253, 249, 0.76), rgba(239, 196, 200, 0.22), rgba(152, 203, 213, 0.16)),
+    var(--paper);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .admin-item h3 {
   margin-bottom: 6px;
   font-size: 1.7rem;

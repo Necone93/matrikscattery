@@ -233,6 +233,8 @@ const seedPosts = [
   },
 ];
 
+const seedNews = [];
+
 function runSql(sql, json = false) {
   return new Promise((resolve, reject) => {
     const args = json ? ["-json", dbPath, sql] : [dbPath, sql];
@@ -297,6 +299,11 @@ function postInsertSql(item) {
     VALUES (${q(item.title)}, ${q(item.category)}, ${q(item.image)}, ${q(JSON.stringify(item.media || []))}, ${q(item.text)}, ${q(JSON.stringify(item.blocks || []))}, ${q(JSON.stringify(item.translations || {}))}, datetime('now'));`;
 }
 
+function newsInsertSql(item) {
+  return `INSERT INTO news (text, link, is_active, sort_order, translations)
+    VALUES (${q(item.text)}, ${q(item.link)}, ${Number(item.is_active ? 1 : 0)}, ${Number(item.sort_order || 0)}, ${q(JSON.stringify(item.translations || {}))});`;
+}
+
 async function ensureColumn(table, column, definition) {
   const columns = await runSql(`PRAGMA table_info(${table});`, true);
   if (columns.some((item) => item.name === column)) return;
@@ -335,14 +342,27 @@ async function initDb() {
       published_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
+    CREATE TABLE IF NOT EXISTS news (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      text TEXT NOT NULL,
+      link TEXT DEFAULT '',
+      is_active INTEGER DEFAULT 1,
+      sort_order INTEGER DEFAULT 0,
+      translations TEXT DEFAULT '{}',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
   `);
 
   await ensureColumn("animals", "translations", "TEXT DEFAULT '{}'");
   await ensureColumn("posts", "translations", "TEXT DEFAULT '{}'");
   await ensureColumn("posts", "blocks", "TEXT DEFAULT '[]'");
+  await ensureColumn("news", "translations", "TEXT DEFAULT '{}'");
+  await ensureColumn("news", "is_active", "INTEGER DEFAULT 1");
+  await ensureColumn("news", "sort_order", "INTEGER DEFAULT 0");
 
   const counts = await runSql(
-    "SELECT (SELECT COUNT(*) FROM animals) AS animals, (SELECT COUNT(*) FROM posts) AS posts;",
+    "SELECT (SELECT COUNT(*) FROM animals) AS animals, (SELECT COUNT(*) FROM posts) AS posts, (SELECT COUNT(*) FROM news) AS news;",
     true,
   );
 
@@ -353,11 +373,16 @@ async function initDb() {
   if (counts[0].posts === 0) {
     await runSql(seedPosts.map(postInsertSql).join("\n"));
   }
+
+  if (counts[0].news === 0 && seedNews.length) {
+    await runSql(seedNews.map(newsInsertSql).join("\n"));
+  }
 }
 
 async function getContent() {
   const animals = await runSql("SELECT * FROM animals ORDER BY sort_order, id DESC;", true);
   const posts = await runSql("SELECT * FROM posts ORDER BY datetime(published_at) DESC, id DESC;", true);
+  const news = await runSql("SELECT * FROM news ORDER BY sort_order, id DESC;", true);
   const normalizedAnimals = animals.map((item) => ({
     ...item,
     gallery: jsonColumn(item.gallery, []),
@@ -374,6 +399,11 @@ async function getContent() {
       media: jsonColumn(post.media, []),
       blocks: normalizePostBlocks(jsonColumn(post.blocks, []), post.text, jsonColumn(post.media, [])),
       translations: jsonColumn(post.translations, {}),
+    })),
+    news: news.map((item) => ({
+      ...item,
+      is_active: Number(item.is_active) === 1,
+      translations: jsonColumn(item.translations, {}),
     })),
   };
 }
@@ -575,6 +605,21 @@ async function preparePost(item, existingTranslations = {}) {
   };
 }
 
+async function prepareNews(item, existingTranslations = {}) {
+  const payload = {
+    text: cleanText(item.text, 280),
+  };
+  const translations = await translatePayload(payload, "homepage_news");
+  return {
+    ...item,
+    text: payload.text,
+    link: cleanLink(item.link),
+    is_active: item.is_active ? 1 : 0,
+    sort_order: Number(item.sort_order || 0),
+    translations: Object.keys(translations).length ? translations : normalizeTranslationMap(existingTranslations),
+  };
+}
+
 function hasTranslation(item, lang) {
   return Object.keys(safeJsonObject(item.translations?.[lang])).length > 0;
 }
@@ -594,6 +639,11 @@ async function translateMissingContent(lang) {
     const prepared = await preparePost(post, post.translations);
     await runSql(`UPDATE posts SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(post.id)};`);
   }
+  for (const item of content.news || []) {
+    if (hasTranslation(item, lang)) continue;
+    const prepared = await prepareNews(item, item.translations);
+    await runSql(`UPDATE news SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(item.id)};`);
+  }
 
   return { ok: true, content: await getContent() };
 }
@@ -605,6 +655,11 @@ async function parseJson(req) {
 
 function cleanText(value, maxLength = 2000) {
   return String(value || "").replace(/\s+/g, " ").trim().slice(0, maxLength);
+}
+
+function cleanLink(value) {
+  const link = cleanText(value, 500);
+  return /^(javascript|data):/i.test(link) ? "" : link;
 }
 
 function isValidEmail(value) {
@@ -770,6 +825,10 @@ async function handleApi(req, res, url) {
       const prepared = await preparePost(post, post.translations);
       await runSql(`UPDATE posts SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(post.id)};`);
     }
+    for (const item of content.news || []) {
+      const prepared = await prepareNews(item, item.translations);
+      await runSql(`UPDATE news SET translations = ${q(JSON.stringify(prepared.translations))}, updated_at = CURRENT_TIMESTAMP WHERE id = ${Number(item.id)};`);
+    }
     send(res, 200, await getContent());
     return;
   }
@@ -868,6 +927,45 @@ async function handleApi(req, res, url) {
 
   if (postMatch && req.method === "DELETE") {
     await runSql(`DELETE FROM posts WHERE id = ${Number(postMatch[1])};`);
+    send(res, 200, await getContent());
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/news") {
+    const item = await parseJson(req);
+    const prepared = await prepareNews(item);
+    if (!prepared.text) {
+      send(res, 400, { error: "Unesite tekst novosti." });
+      return;
+    }
+    await runSql(newsInsertSql(prepared));
+    send(res, 201, await getContent());
+    return;
+  }
+
+  const newsMatch = url.pathname.match(/^\/api\/news\/(\d+)$/);
+  if (newsMatch && req.method === "PUT") {
+    const item = await parseJson(req);
+    const existing = await runSql(`SELECT translations FROM news WHERE id = ${Number(newsMatch[1])};`, true);
+    const prepared = await prepareNews(item, jsonColumn(existing[0]?.translations, {}));
+    if (!prepared.text) {
+      send(res, 400, { error: "Unesite tekst novosti." });
+      return;
+    }
+    await runSql(`UPDATE news SET
+      text = ${q(prepared.text)},
+      link = ${q(prepared.link)},
+      is_active = ${Number(prepared.is_active ? 1 : 0)},
+      sort_order = ${Number(prepared.sort_order || 0)},
+      translations = ${q(JSON.stringify(prepared.translations))},
+      updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${Number(newsMatch[1])};`);
+    send(res, 200, await getContent());
+    return;
+  }
+
+  if (newsMatch && req.method === "DELETE") {
+    await runSql(`DELETE FROM news WHERE id = ${Number(newsMatch[1])};`);
     send(res, 200, await getContent());
     return;
   }

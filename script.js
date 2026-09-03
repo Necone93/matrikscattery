@@ -208,6 +208,7 @@ let posts = [
     text: "Kratke beleške, fotografije i video zapisi iz svakodnevice naših mačaka i mačića.",
   },
 ];
+let news = [];
 
 const modal = document.querySelector("#detailModal");
 const modalContent = document.querySelector("#modalContent");
@@ -674,6 +675,15 @@ function localizeItem(item) {
   return localized;
 }
 
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 async function refreshContent() {
   try {
     const response = await fetch(`/api/content?ts=${Date.now()}`, { cache: "no-store" });
@@ -682,6 +692,7 @@ async function refreshContent() {
     cats = data.cats || cats;
     kittens = data.kittens || kittens;
     posts = data.posts || posts;
+    news = data.news || news;
     return true;
   } catch {
     return false;
@@ -690,7 +701,11 @@ async function refreshContent() {
 
 function contentHasLanguage(lang) {
   if (lang === "sr") return true;
-  return [...cats, ...kittens, ...posts].some((item) => Object.keys(item.translations?.[lang] || {}).length > 0);
+  return [...cats, ...kittens, ...posts, ...news].every((item) => {
+    const isPost = Object.prototype.hasOwnProperty.call(item, "title");
+    const fallback = isPost ? postTranslationFallbacks[item.id]?.[lang] : animalTranslationFallbacks[item.id]?.[lang];
+    return fallback || Object.keys(item.translations?.[lang] || {}).length > 0;
+  });
 }
 
 async function ensureLanguageContent(lang) {
@@ -705,6 +720,7 @@ async function ensureLanguageContent(lang) {
       cats = result.content?.cats || cats;
       kittens = result.content?.kittens || kittens;
       posts = result.content?.posts || posts;
+      news = result.content?.news || news;
     })
     .catch((error) => {
       console.warn(error.message);
@@ -773,6 +789,38 @@ function sortedPosts() {
   return [...posts].sort((a, b) => postSortValue(b) - postSortValue(a));
 }
 
+function sortedActiveNews() {
+  return [...news]
+    .filter((item) => item.is_active !== false && item.text)
+    .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0) || Number(b.id || 0) - Number(a.id || 0));
+}
+
+function renderNewsTicker() {
+  const ticker = document.querySelector("#newsTicker");
+  const track = document.querySelector("#newsTickerTrack");
+  if (!ticker || !track) return;
+
+  const items = sortedActiveNews().map(localizeItem);
+  const segments = [
+    { text: "Matriks Cattery", isBrand: true },
+    ...items.map((item) => ({ text: item.text, link: item.link })),
+  ];
+
+  document.body.classList.add("has-news");
+  ticker.classList.remove("hidden");
+
+  const markup = segments
+    .map((segment) => {
+      const label = escapeHtml(segment.text);
+      const link = String(segment.link || "").trim();
+      const content = `<span class="news-ticker-item"><img class="news-ticker-paw" src="img/catpaw.png" alt="" /> <span class="${segment.isBrand ? "news-ticker-brand" : ""}">${label}</span></span>`;
+      return link ? `<a href="${escapeHtml(link)}">${content}</a>` : content;
+    })
+    .join("");
+
+  track.innerHTML = `<div class="news-ticker-group">${markup}</div>`;
+}
+
 function languageSwitcherMarkup() {
   return `
     <div class="language-switcher" aria-label="Language selector">
@@ -827,6 +875,7 @@ function applyLanguage() {
   renderCards(kittens, "#kittensGrid", { detailPage: "mace.html" });
   renderBlog();
   renderHomeBlog();
+  renderNewsTicker();
   renderAnimalDetail();
   renderPostDetail();
   initFrameNavigation();
@@ -1423,6 +1472,7 @@ async function initContent() {
   renderCards(kittens, "#kittensGrid", { detailPage: "mace.html" });
   renderBlog();
   renderHomeBlog();
+  renderNewsTicker();
   renderAnimalDetail();
   renderPostDetail();
   initFrameNavigation();

@@ -1,5 +1,5 @@
 let password = localStorage.getItem("matriksAdminPassword") || "";
-let content = { cats: [], kittens: [], posts: [] };
+let content = { cats: [], kittens: [], posts: [], news: [] };
 
 const loginPanel = document.querySelector("#loginPanel");
 const adminApp = document.querySelector("#adminApp");
@@ -7,8 +7,10 @@ const passwordInput = document.querySelector("#passwordInput");
 const loginButton = document.querySelector("#loginButton");
 const animalForm = document.querySelector("#animalForm");
 const postForm = document.querySelector("#postForm");
+const newsForm = document.querySelector("#newsForm");
 const animalList = document.querySelector("#animalList");
 const postList = document.querySelector("#postList");
+const newsList = document.querySelector("#newsList");
 const translateAllButton = document.querySelector("#translateAllButton");
 const translateStatus = document.querySelector("#translateStatus");
 const addPostTextBlockButton = document.querySelector("#addPostTextBlock");
@@ -64,6 +66,7 @@ async function loadContent() {
   content = await api("/api/content", { method: "GET" });
   renderAnimals();
   renderPosts();
+  renderNews();
 }
 
 function mediaTag(src, alt) {
@@ -198,6 +201,27 @@ function renderPosts() {
     .join("");
 }
 
+function renderNews() {
+  newsList.innerHTML = (content.news || [])
+    .map(
+      (item) => `
+        <article class="admin-item news-admin-item">
+          <div class="news-admin-marker">${item.is_active ? "Aktivno" : "Sakriveno"}</div>
+          <div>
+            <span class="status">Pokretna traka${item.sort_order ? ` · ${item.sort_order}` : ""}</span>
+            <h3>${item.text}</h3>
+            <p>${item.link || "Bez linka"}</p>
+            <div class="item-actions">
+              <button type="button" data-edit-news="${item.id}">Izmeni</button>
+              <button class="danger" type="button" data-delete-news="${item.id}">Obriši</button>
+            </div>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+}
+
 function resetAnimalForm() {
   animalForm.reset();
   animalForm.id.value = "";
@@ -209,6 +233,14 @@ function resetPostForm() {
   postForm.id.value = "";
   setPostBlocksData([{ type: "text", text: "" }]);
   document.querySelector("#postFormTitle").textContent = "Novi blog post";
+}
+
+function resetNewsForm() {
+  newsForm.reset();
+  newsForm.id.value = "";
+  newsForm.sort_order.value = "0";
+  newsForm.is_active.checked = true;
+  document.querySelector("#newsFormTitle").textContent = "Nova novost";
 }
 
 function fillAnimalForm(item) {
@@ -236,6 +268,17 @@ function fillPostForm(post) {
   renderPostBlocks();
   document.querySelector("#postFormTitle").textContent = `Izmena: ${post.title}`;
   postForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function fillNewsForm(item) {
+  if (!item) return;
+  newsForm.id.value = item.id;
+  newsForm.text.value = item.text || "";
+  newsForm.link.value = item.link || "";
+  newsForm.sort_order.value = item.sort_order || 0;
+  newsForm.is_active.checked = Boolean(item.is_active);
+  document.querySelector("#newsFormTitle").textContent = "Izmena novosti";
+  newsForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function uploadFile(input) {
@@ -305,6 +348,7 @@ document.querySelectorAll(".admin-tabs button").forEach((button) => {
     button.classList.add("active");
     document.querySelector("#animalsTab").classList.toggle("hidden", button.dataset.tab !== "animals");
     document.querySelector("#postsTab").classList.toggle("hidden", button.dataset.tab !== "posts");
+    document.querySelector("#newsTab").classList.toggle("hidden", button.dataset.tab !== "news");
   });
 });
 
@@ -316,6 +360,7 @@ translateAllButton?.addEventListener("click", async () => {
     content = await api("/api/admin/translate-all", { method: "POST" });
     renderAnimals();
     renderPosts();
+    renderNews();
     translateStatus.textContent = "Prevodi su ažurirani.";
   } catch (error) {
     translateStatus.textContent = error.message;
@@ -368,11 +413,32 @@ postForm.addEventListener("submit", async (event) => {
   renderPosts();
 });
 
+newsForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const payload = {
+    text: newsForm.text.value,
+    link: newsForm.link.value,
+    sort_order: Number(newsForm.sort_order.value || 0),
+    is_active: newsForm.is_active.checked,
+  };
+
+  const id = newsForm.id.value;
+  content = await api(id ? `/api/news/${id}` : "/api/news", {
+    method: id ? "PUT" : "POST",
+    body: JSON.stringify(payload),
+  });
+  resetNewsForm();
+  renderNews();
+});
+
 document.addEventListener("click", async (event) => {
   const editAnimal = event.target.closest("[data-edit-animal]");
   const deleteAnimal = event.target.closest("[data-delete-animal]");
   const editPost = event.target.closest("[data-edit-post]");
   const deletePost = event.target.closest("[data-delete-post]");
+  const editNews = event.target.closest("[data-edit-news]");
+  const deleteNews = event.target.closest("[data-delete-news]");
   const removePostBlock = event.target.closest("[data-remove-post-block]");
   const uploadPostBlock = event.target.closest("[data-upload-post-block]");
   const removeBlockMedia = event.target.closest("[data-remove-block-media]");
@@ -394,6 +460,15 @@ document.addEventListener("click", async (event) => {
   if (deletePost && confirm("Obrisati ovaj blog post?")) {
     content = await api(`/api/posts/${deletePost.dataset.deletePost}`, { method: "DELETE" });
     renderPosts();
+  }
+
+  if (editNews) {
+    fillNewsForm((content.news || []).find((item) => item.id === Number(editNews.dataset.editNews)));
+  }
+
+  if (deleteNews && confirm("Obrisati ovu novost?")) {
+    content = await api(`/api/news/${deleteNews.dataset.deleteNews}`, { method: "DELETE" });
+    renderNews();
   }
 
   if (removePostBlock) {
@@ -428,6 +503,7 @@ postBlockList?.addEventListener("input", (event) => {
 
 document.querySelector("#resetAnimal").addEventListener("click", resetAnimalForm);
 document.querySelector("#resetPost").addEventListener("click", resetPostForm);
+document.querySelector("#resetNews").addEventListener("click", resetNewsForm);
 document.querySelector("#animalUpload").addEventListener("change", (event) => {
   uploadFileToField(event.target, document.querySelector("#animalUploadResult"), "#animalForm [name='image']").catch((error) => alert(error.message));
 });

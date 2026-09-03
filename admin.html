@@ -10,8 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=mobile-nav-fit-1" />
-    <link rel="stylesheet" href="admin.css?v=mobile-nav-fit-1" />
+    <link rel="stylesheet" href="styles.css?v=home-news-ticker-1" />
+    <link rel="stylesheet" href="admin.css?v=home-news-ticker-1" />
   </head>
   <body class="admin-page">
     <header class="admin-header">
@@ -38,6 +38,7 @@
         <nav class="admin-tabs" aria-label="Admin sekcije">
           <button class="active" type="button" data-tab="animals">Mačke i mačići</button>
           <button type="button" data-tab="posts">Blog</button>
+          <button type="button" data-tab="news">Novosti</button>
         </nav>
         <div class="admin-toolbar">
           <button class="button ghost" id="translateAllButton" type="button">Prevedi sav sadržaj</button>
@@ -130,9 +131,37 @@
             <div class="admin-list" id="postList"></div>
           </div>
         </section>
+
+        <section class="admin-grid hidden" id="newsTab">
+          <form class="admin-form" id="newsForm">
+            <h2 id="newsFormTitle">Nova novost</h2>
+            <input type="hidden" name="id" />
+            <label>Tekst za pokretnu traku
+              <input name="text" required placeholder="Npr. Stigli su novi mačići" />
+            </label>
+            <label>Link kada se klikne (opciono)
+              <input name="link" placeholder="macici.html ili blog.html" />
+            </label>
+            <label>Redosled
+              <input name="sort_order" type="number" value="0" />
+            </label>
+            <label class="checkbox-label">
+              <input name="is_active" type="checkbox" checked />
+              Prikaži na početnoj strani
+            </label>
+            <div class="form-actions">
+              <button class="button primary" type="submit">Sačuvaj</button>
+              <button class="button ghost" type="button" id="resetNews">Novo</button>
+            </div>
+          </form>
+
+          <div>
+            <div class="admin-list" id="newsList"></div>
+          </div>
+        </section>
       </section>
     </main>
 
-    <script src="admin.js?v=mobile-nav-fit-1"></script>
+    <script src="admin.js?v=home-news-ticker-1"></script>
   </body>
 </html>
