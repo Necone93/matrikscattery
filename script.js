@@ -475,6 +475,14 @@ const translations = {
   },
 };
 
+const contactInfoLabels = {
+  sr: { email: "Email", phone: "Telefon" },
+  en: { email: "Email", phone: "Phone" },
+  it: { email: "Email", phone: "Telefono" },
+  ru: { email: "Email", phone: "Телефон" },
+  de: { email: "Email", phone: "Telefon" },
+};
+
 function tr() {
   return translations[currentLang] || translations.sr;
 }
@@ -881,6 +889,7 @@ function applyLanguage() {
   renderAnimalDetail();
   renderPostDetail();
   initFrameNavigation();
+  initBreedPageScrollFrame();
   applyStaticPageTranslations();
   setNavLabels();
   initScrolledHeaders();
@@ -892,7 +901,7 @@ function applyLanguage() {
 
 function applyStaticPageTranslations() {
   const copy = tr().pages;
-  if (document.body.classList.contains("info-page")) {
+  if (document.body.classList.contains("breed-page") || document.body.classList.contains("info-page")) {
     const breed = document.querySelector(".breed-copy");
     if (breed) {
       breed.querySelector(".kicker").textContent = copy.breedKicker;
@@ -914,6 +923,11 @@ function applyStaticPageTranslations() {
       contact.querySelectorAll("[data-contact-label]").forEach((item) => {
         const key = item.dataset.contactLabel;
         if (copy.contactForm?.[key]) item.textContent = copy.contactForm[key];
+      });
+      contact.querySelectorAll("[data-contact-info-label]").forEach((item) => {
+        const key = item.dataset.contactInfoLabel;
+        const labels = contactInfoLabels[currentLang] || contactInfoLabels.sr;
+        if (labels[key]) item.textContent = labels[key];
       });
     }
   }
@@ -1112,6 +1126,37 @@ function initFrameNavigation() {
       </div>
     `,
   );
+}
+
+function initBreedPageScrollFrame() {
+  if (!document.body.classList.contains("breed-page")) return;
+
+  const main = document.querySelector(".frame-page main");
+  const scrollFrame = document.querySelector(".breed-scroll-frame");
+  const topbar = document.querySelector(".frame-topline");
+  if (!main || !scrollFrame) return;
+
+  const applyViewportHeight = () => {
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
+    document.documentElement.style.setProperty("--breed-vh", `${viewportHeight}px`);
+  };
+
+  applyViewportHeight();
+  window.addEventListener("resize", applyViewportHeight, { passive: true });
+  window.visualViewport?.addEventListener("resize", applyViewportHeight, { passive: true });
+
+  document.body.style.overflow = "hidden";
+  main.style.overflow = "hidden";
+  scrollFrame.style.overflowX = "hidden";
+  scrollFrame.style.overflowY = "scroll";
+  scrollFrame.style.webkitOverflowScrolling = "touch";
+  scrollFrame.style.touchAction = "pan-y";
+
+  if (topbar) {
+    const update = () => topbar.classList.toggle("is-scrolled", scrollFrame.scrollTop > 8);
+    update();
+    scrollFrame.addEventListener("scroll", update, { passive: true });
+  }
 }
 
 function initScrolledHeaders() {

@@ -956,6 +956,26 @@ p {
   text-decoration: none;
 }
 
+.contact-panel a {
+  display: grid;
+  gap: 4px;
+}
+
+.contact-panel strong {
+  color: rgba(39, 50, 58, 0.62);
+  font-size: 0.72rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.contact-panel em {
+  color: var(--ink);
+  font-style: normal;
+  font-size: clamp(0.96rem, 1.2vw, 1.08rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .contact-form {
   width: min(620px, 100%);
   justify-self: center;
@@ -4717,5 +4737,157 @@ body.breed-page.frame-page .breed-image img {
 
   .home-page .news-ticker {
     z-index: 5 !important;
+  }
+}
+
+/* Definitive mobile language sizing across all frame/home pages. */
+@media (max-width: 620px) {
+  .public-page .hero-topline,
+  .public-page .frame-topline {
+    grid-template-columns: 38px 38px minmax(0, 1fr) !important;
+  }
+
+  .public-page .top-actions {
+    right: 8px !important;
+    max-width: calc(100% - 88px) !important;
+  }
+
+  .public-page .language-switcher {
+    grid-template-columns: repeat(5, 29px) !important;
+    gap: 3px !important;
+    padding: 4px !important;
+  }
+
+  .public-page .language-switcher button {
+    width: 29px !important;
+    min-width: 29px !important;
+    height: 29px !important;
+    min-height: 29px !important;
+    font-size: 0.66rem !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .public-page .language-switcher {
+    grid-template-columns: repeat(5, 27px) !important;
+  }
+
+  .public-page .language-switcher button {
+    width: 27px !important;
+    min-width: 27px !important;
+    height: 27px !important;
+    min-height: 27px !important;
+    font-size: 0.62rem !important;
+  }
+}
+
+/* O rasi: page stays fixed, only the content stage scrolls. */
+body.breed-page.public-page {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: var(--breed-vh, 100svh) !important;
+  min-height: var(--breed-vh, 100svh) !important;
+  max-height: var(--breed-vh, 100svh) !important;
+  overflow: hidden !important;
+}
+
+body.breed-page.frame-page main {
+  height: calc(var(--breed-vh, 100svh) - clamp(18px, 3vw, 44px)) !important;
+  max-height: calc(var(--breed-vh, 100svh) - clamp(18px, 3vw, 44px)) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 74px minmax(0, 1fr) !important;
+  overflow: hidden !important;
+  overscroll-behavior: contain !important;
+}
+
+body.breed-page.frame-page .page-hero {
+  display: none !important;
+}
+
+body.breed-page.frame-page .breed-scroll-frame {
+  grid-row: 2 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  scrollbar-width: thin;
+}
+
+body.breed-page.frame-page .breed {
+  display: grid !important;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1fr) !important;
+  gap: clamp(28px, 5vw, 76px) !important;
+  align-items: center !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 100% !important;
+  overflow: visible !important;
+}
+
+body.breed-page.frame-page .breed-image,
+body.breed-page.frame-page .breed-copy {
+  min-height: 0 !important;
+}
+
+body.breed-page.frame-page .breed-image img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: min(68svh, 680px) !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 920px) {
+  body.breed-page.frame-page main {
+    height: calc(var(--breed-vh, 100svh) - 16px) !important;
+    max-height: calc(var(--breed-vh, 100svh) - 16px) !important;
+    grid-template-rows: 64px minmax(0, 1fr) !important;
+  }
+
+  body.breed-page.frame-page .breed-scroll-frame {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: scroll !important;
+  }
+
+  body.breed-page.frame-page .breed {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+    min-height: auto !important;
+    padding: 16px 14px 40px !important;
+    gap: 20px !important;
+  }
+
+  body.breed-page.frame-page .breed-image {
+    width: min(520px, 100%) !important;
+    justify-self: center !important;
+  }
+
+  body.breed-page.frame-page .breed-image img {
+    max-height: min(42svh, 380px) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  body.breed-page.frame-page main {
+    height: calc(var(--breed-vh, 100svh) - 12px) !important;
+    max-height: calc(var(--breed-vh, 100svh) - 12px) !important;
+    grid-template-rows: 62px minmax(0, 1fr) !important;
+  }
+
+  body.breed-page.frame-page .breed {
+    padding: 16px 14px 48px !important;
+    gap: 18px !important;
+  }
+
+  body.breed-page.frame-page .breed-image img {
+    max-height: min(36svh, 320px) !important;
   }
 }
