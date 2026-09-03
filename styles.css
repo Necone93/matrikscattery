@@ -4902,3 +4902,58 @@ body.breed-page.frame-page .breed-image img {
     max-height: min(36svh, 320px) !important;
   }
 }
+
+/* Compact contact details after adding social channels. */
+.contact-page .contact-panel {
+  gap: 1px !important;
+}
+
+.contact-page .contact-panel a,
+.contact-page .contact-panel span {
+  padding: 14px 16px !important;
+}
+
+.contact-page .contact-panel strong {
+  font-size: 0.66rem !important;
+}
+
+.contact-page .contact-panel em {
+  font-size: 0.9rem !important;
+  line-height: 1.18 !important;
+}
+
+@media (max-width: 920px) {
+  .contact-page .contact-panel a,
+  .contact-page .contact-panel span {
+    padding: 10px 12px !important;
+  }
+
+  .contact-page .contact-panel strong {
+    font-size: 0.58rem !important;
+  }
+
+  .contact-page .contact-panel em {
+    font-size: 0.78rem !important;
+    line-height: 1.12 !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .contact-page .contact-copy {
+    gap: 8px !important;
+  }
+
+  .contact-page .contact-panel a,
+  .contact-page .contact-panel span {
+    padding: 7px 10px !important;
+  }
+
+  .contact-page .contact-panel strong {
+    font-size: 0.52rem !important;
+  }
+
+  .contact-page .contact-panel em {
+    font-size: 0.7rem !important;
+    line-height: 1.08 !important;
+  }
+}
