@@ -4191,3 +4191,56 @@ footer img {
     font-size: 0.52rem !important;
   }
 }
+
+/* Breed page scroll fix: this page needs normal scrollY; the home page remains fixed. */
+body.info-page.public-page {
+  height: auto !important;
+  min-height: 100svh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.info-page.frame-page main {
+  height: auto !important;
+  min-height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  grid-template-rows: 74px auto !important;
+  overflow: visible !important;
+}
+
+.info-page.frame-page .breed {
+  grid-row: 2 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+@media (max-width: 920px) {
+  .info-page.frame-page main {
+    min-height: calc(100svh - 16px) !important;
+    grid-template-rows: 64px auto !important;
+    overflow: visible !important;
+  }
+
+  .info-page.frame-page .breed {
+    overflow: visible !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .info-page.frame-page main {
+    min-height: calc(100svh - 12px) !important;
+    grid-template-rows: 62px auto !important;
+  }
+
+  .info-page.frame-page .breed {
+    padding-bottom: 34px !important;
+  }
+
+  .info-page.frame-page .breed-image {
+    width: min(420px, 100%) !important;
+  }
+
+  .info-page.frame-page .breed-image img {
+    max-height: min(48svh, 420px) !important;
+  }
+}
