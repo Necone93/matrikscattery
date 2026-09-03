@@ -4674,6 +4674,12 @@ body.breed-page.frame-page .breed-copy {
   min-height: 0 !important;
 }
 
+body.breed-page.frame-page .breed-copy h2 {
+  max-width: 780px !important;
+  font-size: clamp(1.7rem, 3.1vw, 3.2rem) !important;
+  line-height: 1.08 !important;
+}
+
 body.breed-page.frame-page .breed-image img {
   width: 100% !important;
   height: auto !important;
@@ -4885,6 +4891,11 @@ body.breed-page.frame-page .breed-image img {
   body.breed-page.frame-page .breed {
     padding: 16px 14px 48px !important;
     gap: 18px !important;
+  }
+
+  body.breed-page.frame-page .breed-copy h2 {
+    font-size: clamp(1.45rem, 7vw, 2.15rem) !important;
+    line-height: 1.1 !important;
   }
 
   body.breed-page.frame-page .breed-image img {
