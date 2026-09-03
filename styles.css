@@ -4605,3 +4605,98 @@ body.info-page.public-page {
     font-size: 0.72rem !important;
   }
 }
+
+/* Final breed-page contract: body is fixed, the glass frame is the only vertical scroller. */
+body.breed-page.public-page {
+  height: 100svh !important;
+  min-height: 100svh !important;
+  overflow: hidden !important;
+}
+
+body.breed-page.frame-page main {
+  height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  max-height: calc(100svh - clamp(18px, 3vw, 44px)) !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: 74px auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+}
+
+body.breed-page.frame-page .frame-topline {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 8 !important;
+}
+
+body.breed-page.frame-page .page-hero {
+  display: none !important;
+}
+
+body.breed-page.frame-page .breed {
+  grid-row: 2 !important;
+  display: grid !important;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1fr) !important;
+  gap: clamp(28px, 5vw, 76px) !important;
+  align-items: center !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+body.breed-page.frame-page .breed-image,
+body.breed-page.frame-page .breed-copy {
+  min-height: 0 !important;
+}
+
+body.breed-page.frame-page .breed-image img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: min(68svh, 680px) !important;
+  object-fit: contain !important;
+}
+
+@media (max-width: 920px) {
+  body.breed-page.frame-page main {
+    height: calc(100svh - 16px) !important;
+    max-height: calc(100svh - 16px) !important;
+    grid-template-rows: 64px auto !important;
+  }
+
+  body.breed-page.frame-page .breed {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+    padding: 16px 14px 34px !important;
+  }
+
+  body.breed-page.frame-page .breed-image {
+    width: min(520px, 100%) !important;
+    justify-self: center !important;
+  }
+
+  body.breed-page.frame-page .breed-image img {
+    max-height: min(48svh, 440px) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  body.breed-page.frame-page main {
+    height: calc(100svh - 12px) !important;
+    max-height: calc(100svh - 12px) !important;
+    grid-template-rows: 62px auto !important;
+  }
+
+  body.breed-page.frame-page .breed {
+    gap: 18px !important;
+    padding: 16px 14px 38px !important;
+  }
+
+  body.breed-page.frame-page .breed-image img {
+    max-height: min(42svh, 360px) !important;
+  }
+}
