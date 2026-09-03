@@ -801,10 +801,12 @@ function renderNewsTicker() {
   if (!ticker || !track) return;
 
   const items = sortedActiveNews().map(localizeItem);
-  const segments = [
-    { text: "Matriks Cattery", isBrand: true },
-    ...items.map((item) => ({ text: item.text, link: item.link })),
-  ];
+  const segments = items.length
+    ? items.flatMap((item) => [
+      { text: item.text, link: item.link },
+      { text: "Matriks Cattery", isBrand: true },
+    ])
+    : [{ text: "Matriks Cattery", isBrand: true, endPaw: true }];
 
   document.body.classList.add("has-news");
   ticker.classList.remove("hidden");
@@ -813,7 +815,7 @@ function renderNewsTicker() {
     .map((segment) => {
       const label = escapeHtml(segment.text);
       const link = String(segment.link || "").trim();
-      const content = `<span class="news-ticker-item"><img class="news-ticker-paw" src="img/catpaw.png" alt="" /> <span class="${segment.isBrand ? "news-ticker-brand" : ""}">${label}</span></span>`;
+      const content = `<span class="news-ticker-item"><img class="news-ticker-paw" src="img/catpaw.png" alt="" /> <span class="${segment.isBrand ? "news-ticker-brand" : ""}">${label}</span>${segment.endPaw ? ` <img class="news-ticker-paw" src="img/catpaw.png" alt="" />` : ""}</span>`;
       return link ? `<a href="${escapeHtml(link)}">${content}</a>` : content;
     })
     .join("");

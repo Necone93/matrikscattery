@@ -4270,15 +4270,14 @@ body.info-page.public-page {
 }
 
 .news-ticker-track {
-  display: flex;
-  width: max-content;
-  min-width: 100%;
+  display: block;
+  width: 100%;
   height: 100%;
-  animation: news-ticker-scroll 18s linear infinite;
+  overflow: hidden;
 }
 
-.news-ticker:hover .news-ticker-track,
-.news-ticker:focus-within .news-ticker-track {
+.news-ticker:hover .news-ticker-group,
+.news-ticker:focus-within .news-ticker-group {
   animation-play-state: paused;
 }
 
@@ -4286,9 +4285,10 @@ body.info-page.public-page {
   display: flex;
   align-items: center;
   gap: clamp(26px, 5vw, 70px);
-  min-width: max-content;
+  width: max-content;
   padding-left: 100%;
   padding-right: clamp(26px, 5vw, 70px);
+  animation: news-ticker-scroll 18s linear infinite;
 }
 
 .news-ticker a {
@@ -4445,5 +4445,100 @@ body.info-page.public-page {
 
   .home-page.has-news .hero-cat {
     max-height: 42svh !important;
+  }
+}
+
+/* Final mobile home layout with ticker directly under navigation. */
+@media (max-width: 620px) {
+  .home-page.has-news .hero-stage {
+    grid-template-rows: 70px 38px minmax(0, auto) minmax(210px, 1fr) 34px !important;
+    grid-template-areas:
+      "top"
+      "ticker"
+      "copy"
+      "image"
+      "social" !important;
+    row-gap: 0 !important;
+    padding: 0 10px 5px !important;
+    overflow: hidden !important;
+  }
+
+  .home-page.has-news .hero-topline {
+    min-height: 70px !important;
+    margin-inline: -10px !important;
+  }
+
+  .home-page.has-news .news-ticker {
+    align-self: start !important;
+    width: calc(100% + 20px) !important;
+    margin-inline: -10px !important;
+    margin-top: 0 !important;
+  }
+
+  .home-page.has-news .hero-copy {
+    align-self: start !important;
+    gap: 7px !important;
+    padding-top: 22px !important;
+    padding-bottom: 0 !important;
+  }
+
+  .home-page.has-news .hero-copy .kicker {
+    font-size: 0.78rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .home-page.has-news .hero-copy h1 {
+    font-size: clamp(2.36rem, 11.6vw, 3.28rem) !important;
+    line-height: 0.98 !important;
+  }
+
+  .home-page.has-news .hero-copy p:not(.kicker) {
+    font-size: 1.02rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .home-page.has-news #heroText {
+    -webkit-line-clamp: 3 !important;
+  }
+
+  .home-page.has-news .hero-actions {
+    margin-top: 2px !important;
+  }
+
+  .home-page.has-news .hero-cat {
+    align-self: end !important;
+    width: min(560px, 100%) !important;
+    height: 100% !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+  }
+
+  .home-page.has-news .hero-cat img {
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: bottom center !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-page.has-news .hero-stage {
+    grid-template-rows: 66px 38px minmax(0, auto) minmax(175px, 1fr) 30px !important;
+  }
+
+  .home-page.has-news .hero-topline {
+    min-height: 66px !important;
+  }
+
+  .home-page.has-news .hero-copy {
+    padding-top: 16px !important;
+  }
+
+  .home-page.has-news .hero-copy h1 {
+    font-size: clamp(2.04rem, 10.8vw, 2.76rem) !important;
+  }
+
+  .home-page.has-news .hero-copy p:not(.kicker) {
+    font-size: 0.94rem !important;
+    line-height: 1.34 !important;
   }
 }
