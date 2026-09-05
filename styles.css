@@ -4957,3 +4957,72 @@ body.breed-page.frame-page .breed-image img {
     line-height: 1.08 !important;
   }
 }
+
+/* Responsive layout: let content determine height when the viewport is too short. */
+.frame-topline .frame-home-link {
+  position: static;
+  padding: 3px 10px;
+  line-height: 1.2;
+}
+
+@media (max-width: 920px) {
+  body.home-page.public-page,
+  .home-page main,
+  .home-page .hero {
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow-y: auto !important;
+  }
+
+  .home-page .hero-stage,
+  .home-page.has-news .hero-stage {
+    height: auto !important;
+    min-height: calc(100svh - 18px) !important;
+    max-height: none !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: max-content max-content minmax(180px, auto) max-content !important;
+    grid-template-areas: "top" "copy" "image" "social" !important;
+  }
+
+  .home-page.has-news .hero-stage {
+    grid-template-rows: max-content 44px max-content minmax(180px, auto) max-content !important;
+    grid-template-areas: "top" "ticker" "copy" "image" "social" !important;
+  }
+
+  .home-page .hero-cat,
+  .home-page.has-news .hero-cat {
+    height: clamp(180px, 36svh, 420px) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 12px 0 0 !important;
+  }
+
+  .home-page .hero-social {
+    position: static !important;
+    height: auto !important;
+    min-height: 36px;
+    padding-block: 6px !important;
+  }
+
+  .hero-social-links {
+    flex-wrap: wrap;
+  }
+
+  .hero-mini-nav,
+  .frame-nav {
+    max-height: calc(100svh - 100px);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (max-width: 620px) {
+  .home-page .hero-stage,
+  .home-page.has-news .hero-stage {
+    min-height: calc(100svh - 12px) !important;
+  }
+
+  .home-page.has-news .hero-stage {
+    grid-template-rows: max-content 38px max-content minmax(180px, auto) max-content !important;
+  }
+}
